@@ -2,31 +2,36 @@ package com.example.demo.doctor;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "Doctor")
 @Table
 public class Doctor {
     @Override
     public String toString() {
         return "Doctor {id=" + id + ", name=" + name + ", dept=" + dept + ", symptoms=" + symptoms + ", degrees="
-                + degrees + "}";
+                + degrees + ", phone=" + phone + "}";
     }
 
     @Id
     @SequenceGenerator(name = "doctor_sequence", sequenceName = "doctor_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctor_sequence")
+    @Column(updatable = false, name = "id")
     private Long id;
+    @Column(nullable = false, name = "name", columnDefinition = "TEXT")
     private String name;
     private String dept;
     private String symptoms;
+    @Column(nullable = false, name = "phone", unique = true)
+    private String phone;
+    private String degrees;
+
     // private List<String> symptoms;
 
     // private List<String> degrees;
-    private String degrees;
 
     public Doctor() {
     }
 
-    public Doctor(Long id, String name, String dept, String symptoms, String degrees) {
+    public Doctor(Long id, String name, String dept, String symptoms, String degrees, String phone) {
 
         // public Doctor(Long id, String name, String dept, List<String> symptoms,
         // List<String> degrees) {
@@ -36,9 +41,10 @@ public class Doctor {
         this.dept = dept;
         this.symptoms = symptoms;
         this.degrees = degrees;
+        this.phone = phone;
     }
 
-    public Doctor(String name, String dept, String symptoms, String degrees) {
+    public Doctor(String name, String dept, String symptoms, String degrees, String phone) {
 
         // public Doctor(Long id, String name, String dept, List<String> symptoms,
         // List<String> degrees) {
@@ -47,6 +53,7 @@ public class Doctor {
         this.dept = dept;
         this.symptoms = symptoms;
         this.degrees = degrees;
+        this.phone = phone;
     }
 
     public Long getId() {
@@ -87,6 +94,14 @@ public class Doctor {
 
     public void setDegrees(String degrees) {
         this.degrees = degrees;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
 }
