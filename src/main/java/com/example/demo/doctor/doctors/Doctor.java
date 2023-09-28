@@ -1,4 +1,4 @@
-package com.example.demo.doctor;
+package com.example.demo.doctor.doctors;
 
 import jakarta.persistence.*;
 
@@ -25,7 +25,6 @@ public class Doctor {
     private String degrees;
 
     // private List<String> symptoms;
-
     // private List<String> degrees;
 
     public Doctor() {

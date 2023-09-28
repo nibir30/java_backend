@@ -1,4 +1,4 @@
-package com.example.demo.doctor;
+package com.example.demo.doctor.doctors;
 
 import java.util.List;
 
