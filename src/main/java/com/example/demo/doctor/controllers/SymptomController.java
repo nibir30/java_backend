@@ -1,5 +1,4 @@
-package com.example.demo.doctor.symptom;
-
+package com.example.demo.doctor.controllers;
 
 import java.util.List;
 
@@ -10,6 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.doctor.entity.Symptom;
+import com.example.demo.doctor.services.SymptomService;
 
 @RestController
 @RequestMapping(path = "api/v1/symptoms")
@@ -38,11 +40,11 @@ public class SymptomController {
 
     // @PutMapping(path = "{symptomId}")
     // public void updateDoctor(@PathVariable("symptomId") Long id,
-    //         @RequestParam(required = false) String name,
-    //         @RequestParam(required = false) String symptom,
-    //         @RequestParam(required = false) String symptoms,
-    //         @RequestParam(required = false) String degrees) {
-    //     service.updateDoctor(id, name, symptom, symptoms, degrees);
+    // @RequestParam(required = false) String name,
+    // @RequestParam(required = false) String symptom,
+    // @RequestParam(required = false) String symptoms,
+    // @RequestParam(required = false) String degrees) {
+    // service.updateDoctor(id, name, symptom, symptoms, degrees);
     // }
 
     @PostMapping(path = "{symptomId}")

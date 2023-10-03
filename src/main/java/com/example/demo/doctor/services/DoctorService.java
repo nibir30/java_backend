@@ -3,20 +3,26 @@ package com.example.demo.doctor.services;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.doctor.dto.DoctorDto;
+import com.example.demo.doctor.entity.Degree;
 import com.example.demo.doctor.entity.Department;
 import com.example.demo.doctor.entity.Doctor;
 import com.example.demo.doctor.entity.FileData;
+import com.example.demo.doctor.entity.Symptom;
 import com.example.demo.doctor.repositories.DegreeRepository;
 import com.example.demo.doctor.repositories.DepartmentRepository;
 import com.example.demo.doctor.repositories.DoctorRepository;
-import com.example.demo.doctor.symptom.SymptomRepository;
+import com.example.demo.doctor.repositories.SymptomRepository;
 import com.example.demo.helpers.DebugHelper;
 
 import jakarta.transaction.Transactional;
@@ -44,7 +50,7 @@ public class DoctorService {
         String filePath = FOLDER_PATH + "DOCTOR" + file.getOriginalFilename();
 
         FileData data = FileData.builder()
-                .name(file.getOriginalFilename())
+                .name("DOCTOR" + file.getOriginalFilename())
                 .type(file.getContentType())
                 .filePath(filePath).build();
         DebugHelper.printData(data.toString());
@@ -54,22 +60,26 @@ public class DoctorService {
 
         if (data != null) {
             return data;
+        } else {
+            return null;
         }
-        return null;
     }
 
-    public Map<String, String> addNewDoctor(Doctor doctor) {
-        boolean isDeptOk = departmentRepository.existsById(doctor.getDept_id());
+    // public Map<String, String> addNewDoctor(Doctor doctor) {
+
+    public Map<String, String> addNewDoctor(DoctorDto doctorDto) {
+
         boolean isSymptomOk = true;
         boolean isDegreeOk = true;
+        boolean isDeptOk = departmentRepository.existsById(doctorDto.getDeptId());
 
-        for (Long symptomId : doctor.getSymptom()) {
+        for (Long symptomId : doctorDto.getSymptomIds()) {
             if (!symptomRepository.existsById(symptomId)) {
                 isSymptomOk = false;
                 break;
             }
         }
-        for (Long degreeId : doctor.getDegree()) {
+        for (Long degreeId : doctorDto.getDegreeIds()) {
             if (!degreeRepository.existsById(degreeId)) {
                 isDegreeOk = false;
                 break;
@@ -77,14 +87,26 @@ public class DoctorService {
         }
         Map<String, String> result = new HashMap<String, String>();
         if (isDeptOk && isSymptomOk && isDegreeOk) {
-            doctorRepository.save(doctor);
-            Doctor savedDoctor = doctorRepository.save(doctor);
+            Doctor doctor = new Doctor();
+            BeanUtils.copyProperties(doctorDto, doctor);
+            List<Symptom> symptoms = new ArrayList<>();
+            List<Degree> degrees = new ArrayList<>();
 
-            System.out.println(doctor);
+            for (Long symptomId : doctorDto.getSymptomIds()) {
+                symptoms.add(symptomRepository.getReferenceById(symptomId));
+            }
+            for (Long degreeId : doctorDto.getDegreeIds()) {
+                degrees.add(degreeRepository.getReferenceById(degreeId));
+            }
+            doctor.setDegree(degrees);
+            doctor.setSymptom(symptoms);
+            doctor.setDept(departmentRepository.getReferenceById(doctorDto.getDeptId()));
+
+            Doctor savedDoctor = doctorRepository.save(doctor);
+            DebugHelper.printData(savedDoctor.toString());
             result.put("id", savedDoctor.getId().toString());
             result.put("message", "Doctor added successfully");
             return result;
-            // return "Doctor added successfully";
 
         } else {
             if (!isDeptOk) {
@@ -142,57 +164,57 @@ public class DoctorService {
     // }
     // }
 
-    @Transactional
-    public void updateDoctor(Long id, Doctor doctor) {
-        Doctor newDoctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));
-        boolean isDeptOk = departmentRepository.existsById(doctor.getDept_id());
-        boolean isSymptomOk = true;
-        boolean isDegreeOk = true;
+    // @Transactional
+    // public void updateDoctor(Long id, Doctor doctor) {
+    // Doctor newDoctor = doctorRepository.findById(id)
+    // .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));
+    // boolean isDeptOk = departmentRepository.existsById(doctor.getDept_id());
+    // boolean isSymptomOk = true;
+    // boolean isDegreeOk = true;
 
-        if (doctor.getSymptom() != null) {
-            for (Long symptomId : doctor.getSymptom()) {
-                if (!symptomRepository.existsById(symptomId)) {
-                    isSymptomOk = false;
-                    break;
-                }
-            }
-        }
-        if (doctor.getDegree() != null) {
-            for (Long degreeId : doctor.getDegree()) {
-                if (!degreeRepository.existsById(degreeId)) {
-                    isSymptomOk = false;
-                    break;
-                }
-            }
-        }
+    // if (doctor.getSymptom() != null) {
+    // for (Long symptomId : doctor.getSymptom()) {
+    // if (!symptomRepository.existsById(symptomId)) {
+    // isSymptomOk = false;
+    // break;
+    // }
+    // }
+    // }
+    // if (doctor.getDegree() != null) {
+    // for (Long degreeId : doctor.getDegree()) {
+    // if (!degreeRepository.existsById(degreeId)) {
+    // isSymptomOk = false;
+    // break;
+    // }
+    // }
+    // }
 
-        // if (doctor.getDept() != null) {
-        // newDoctor.setDept(doctor.getDept());
-        // }
+    // // if (doctor.getDept() != null) {
+    // // newDoctor.setDept(doctor.getDept());
+    // // }
 
-        if (isDeptOk && isSymptomOk && isDegreeOk) {
+    // if (isDeptOk && isSymptomOk && isDegreeOk) {
 
-            if (doctor.getName() != null && doctor.getName().length() > 0) {
-                newDoctor.setName(doctor.getName());
-            }
-            if (doctor.getDept_id() != null) {
-                Department dept = departmentRepository.findById(doctor.getDept_id())
-                        .orElseThrow(() -> new IllegalStateException("Department does not exit"));
-                newDoctor.setDept_id(doctor.getDept_id());
-            }
-            if (doctor.getDegree() != null && doctor.getDegree().size() > 0) {
-                newDoctor.setDegree(doctor.getDegree());
-            }
-            if (doctor.getSymptom() != null && doctor.getSymptom().size() > 0) {
-                newDoctor.setSymptom(doctor.getSymptom());
-            }
+    // if (doctor.getName() != null && doctor.getName().length() > 0) {
+    // newDoctor.setName(doctor.getName());
+    // }
+    // if (doctor.getDept_id() != null) {
+    // Department dept = departmentRepository.findById(doctor.getDept_id())
+    // .orElseThrow(() -> new IllegalStateException("Department does not exit"));
+    // newDoctor.setDept_id(doctor.getDept_id());
+    // }
+    // if (doctor.getDegree() != null && doctor.getDegree().size() > 0) {
+    // newDoctor.setDegree(doctor.getDegree());
+    // }
+    // if (doctor.getSymptom() != null && doctor.getSymptom().size() > 0) {
+    // newDoctor.setSymptom(doctor.getSymptom());
+    // }
 
-            System.out.println(newDoctor);
+    // System.out.println(newDoctor);
 
-        }
+    // }
 
-    }
+    // }
 
     private final String FOLDER_PATH = "D:/dev/backend/java/java_backend/src/images/doctors/";
     // private final String FOLDER_PATH = "/Users/javatechie/Desktop/MyFIles/";

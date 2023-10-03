@@ -16,36 +16,25 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Doctor {
 
-    @Override
-    public String toString() {
-        return "Doctor [id=" + id + ", name=" + name + ", phone=" + phone + ", dept_id=" + dept_id + ", degree="
-                + degree + ", symptom=" + symptom + "]";
-    }
-
     @Id
-    @SequenceGenerator(name = "doctor_sequence", sequenceName = "doctor_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctor_sequence")
-    @Column(updatable = false, name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, name = "name", columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, name = "phone", unique = true)
+    @Column(nullable = false)
     private String phone;
-    private Long dept_id;
-    private List<Long> degree;
-    private List<Long> symptom;
+
+    @ManyToOne(targetEntity = Department.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_doctor_department", referencedColumnName = "id", nullable = false)
+    private Department dept;
+
+    @ManyToMany(targetEntity = Degree.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_doctor_degree", referencedColumnName = "id")
+    private List<Degree> degree;
+
+    @ManyToMany(targetEntity = Degree.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_doctor_symptom", referencedColumnName = "id")
+    private List<Symptom> symptom;
     private String image_file_path;
-
-    public Doctor(String name, String phone, Long dept_id,
-            List<Long> degree, List<Long> symptom, String imageFilePath) {
-
-        this.name = name;
-        this.phone = phone;
-        this.dept_id = dept_id;
-        this.degree = degree;
-        this.symptom = symptom;
-        this.image_file_path = imageFilePath;
-    }
-
 }

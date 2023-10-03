@@ -14,17 +14,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.doctor.dto.DoctorDto;
 import com.example.demo.doctor.entity.Doctor;
 import com.example.demo.doctor.entity.FileData;
 import com.example.demo.doctor.services.DoctorService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping(path = "api/v1/doctors")
 public class DoctorController {
     private final DoctorService service;
 
-    // @Autowired
     public DoctorController(DoctorService service) {
         this.service = service;
     }
@@ -34,25 +33,11 @@ public class DoctorController {
         return service.getDoctors();
     }
 
-    // @PostMapping
     @PostMapping()
-    // public Map<String, String> addNewDoctor(@RequestBody Doctor doctor,
-    // @RequestParam("image") MultipartFile file)
-    public Map<String, String> addNewDoctor(@RequestParam("doctor") String doctor,
-            @RequestParam("image") MultipartFile file)
-
-            // (@RequestPart("doctor") Doctor doctor,
-            // @RequestPart("image") MultipartFile file)
-
+    public Map<String, String> addNewDoctor(@RequestBody DoctorDto doctorDto)
             throws NumberFormatException, IOException {
+        Map<String, String> result = service.addNewDoctor(doctorDto);
 
-        // @Autowired
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> result = service.addNewDoctor(objectMapper.readValue(doctor, Doctor.class));
-
-        if (result.get("id") != null) {
-            service.uploadImageToFileSystem(Long.parseLong(result.get("id")), file);
-        }
         return result;
     }
 
@@ -85,8 +70,9 @@ public class DoctorController {
     // service.updateDoctor(id, name, dept, symptoms, degrees);
     // }
 
-    @PostMapping(path = "{doctorId}")
-    public void updateDoctor(@PathVariable("doctorId") Long id, @RequestBody Doctor doctor) {
-        service.updateDoctor(id, doctor);
-    }
+    // @PostMapping(path = "{doctorId}")
+    // public void updateDoctor(@PathVariable("doctorId") Long id, @RequestBody
+    // Doctor doctor) {
+    // service.updateDoctor(id, doctor);
+    // }
 }

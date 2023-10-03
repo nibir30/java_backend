@@ -1,7 +1,11 @@
-package com.example.demo.doctor.symptom;
+package com.example.demo.doctor.services;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import com.example.demo.doctor.entity.Symptom;
+import com.example.demo.doctor.repositories.SymptomRepository;
 
 import jakarta.transaction.Transactional;
 
