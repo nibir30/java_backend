@@ -1,4 +1,4 @@
-package com.example.demo.doctor.degrees;
+package com.example.demo.doctor.entity;
 
 import jakarta.persistence.*;
 
@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Degree {
     @Override
     public String toString() {
-        return "Degree {id=" + id + ", name=" + name +", bangla_name=" + bangla_name + "}";
+        return "Degree {id=" + id + ", name=" + name + ", bangla_name=" + bangla_name + "}";
     }
 
     @Id
@@ -16,7 +16,7 @@ public class Degree {
     @Column(updatable = false, name = "id")
     private Long id;
     @Column(nullable = false, name = "name", columnDefinition = "TEXT")
-    private String name;    
+    private String name;
     private String bangla_name;
 
     public String getBangla_name() {
@@ -50,6 +50,5 @@ public class Degree {
     public void setName(String name) {
         this.name = name;
     }
-
 
 }

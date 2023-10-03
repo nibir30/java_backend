@@ -1,7 +1,11 @@
-package com.example.demo.doctor.department;
+package com.example.demo.doctor.services;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import com.example.demo.doctor.entity.Department;
+import com.example.demo.doctor.repositories.DepartmentRepository;
 
 import jakarta.transaction.Transactional;
 

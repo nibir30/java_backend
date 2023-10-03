@@ -1,7 +1,11 @@
-package com.example.demo.doctor.degrees;
+package com.example.demo.doctor.services;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import com.example.demo.doctor.entity.Degree;
+import com.example.demo.doctor.repositories.DegreeRepository;
 
 import jakarta.transaction.Transactional;
 

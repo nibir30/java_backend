@@ -1,3 +1,4 @@
+package com.example.demo.doctor.config;
 // package com.example.demo.doctor;
 
 // import org.springframework.boot.CommandLineRunner;

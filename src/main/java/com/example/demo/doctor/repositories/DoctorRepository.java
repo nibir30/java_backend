@@ -1,10 +1,16 @@
-package com.example.demo.doctor.department;
+package com.example.demo.doctor.repositories;
+
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.doctor.entity.Doctor;
+
 @Repository
-public interface DepartmentRepository extends JpaRepository<Department, Long> {
+public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     // @Query("SELECT D FROM Doctor d WHERE d.email = ?1")
     // Optional<Doctor> findDOctorByEmail(String Email);
+    Optional<Doctor> findByName(String fileName);
+
 }

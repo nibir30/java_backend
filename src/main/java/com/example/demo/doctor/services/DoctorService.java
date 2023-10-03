@@ -1,0 +1,228 @@
+package com.example.demo.doctor.services;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.doctor.entity.Department;
+import com.example.demo.doctor.entity.Doctor;
+import com.example.demo.doctor.entity.FileData;
+import com.example.demo.doctor.repositories.DegreeRepository;
+import com.example.demo.doctor.repositories.DepartmentRepository;
+import com.example.demo.doctor.repositories.DoctorRepository;
+import com.example.demo.doctor.symptom.SymptomRepository;
+import com.example.demo.helpers.DebugHelper;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class DoctorService {
+    private final DoctorRepository doctorRepository;
+    private final DepartmentRepository departmentRepository;
+    private final SymptomRepository symptomRepository;
+    private final DegreeRepository degreeRepository;
+
+    public DoctorService(DoctorRepository doctorRepository, DepartmentRepository departmentRepository,
+            SymptomRepository symptomRepository, DegreeRepository degreeRepository) {
+        this.doctorRepository = doctorRepository;
+        this.departmentRepository = departmentRepository;
+        this.symptomRepository = symptomRepository;
+        this.degreeRepository = degreeRepository;
+    }
+
+    public List<Doctor> getDoctors() {
+        return doctorRepository.findAll();
+    }
+
+    public FileData uploadImageToFileSystem(MultipartFile file) throws IOException {
+        String filePath = FOLDER_PATH + "DOCTOR" + file.getOriginalFilename();
+
+        FileData data = FileData.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .filePath(filePath).build();
+        DebugHelper.printData(data.toString());
+        DebugHelper.printData(filePath);
+
+        file.transferTo(new File(filePath));
+
+        if (data != null) {
+            return data;
+        }
+        return null;
+    }
+
+    public Map<String, String> addNewDoctor(Doctor doctor) {
+        boolean isDeptOk = departmentRepository.existsById(doctor.getDept_id());
+        boolean isSymptomOk = true;
+        boolean isDegreeOk = true;
+
+        for (Long symptomId : doctor.getSymptom()) {
+            if (!symptomRepository.existsById(symptomId)) {
+                isSymptomOk = false;
+                break;
+            }
+        }
+        for (Long degreeId : doctor.getDegree()) {
+            if (!degreeRepository.existsById(degreeId)) {
+                isDegreeOk = false;
+                break;
+            }
+        }
+        Map<String, String> result = new HashMap<String, String>();
+        if (isDeptOk && isSymptomOk && isDegreeOk) {
+            doctorRepository.save(doctor);
+            Doctor savedDoctor = doctorRepository.save(doctor);
+
+            System.out.println(doctor);
+            result.put("id", savedDoctor.getId().toString());
+            result.put("message", "Doctor added successfully");
+            return result;
+            // return "Doctor added successfully";
+
+        } else {
+            if (!isDeptOk) {
+                result.put("id", null);
+                result.put("message", "Department does not exist");
+                return result;
+            }
+            if (!isSymptomOk) {
+                result.put("id", null);
+                result.put("message", "Symptom does not exist");
+                return result;
+            }
+            if (!isDegreeOk) {
+                result.put("id", null);
+                result.put("message", "Degree does not exist");
+                return result;
+            }
+        }
+        result.put("id", null);
+        result.put("message", "Error");
+        return result;
+    }
+
+    public void deleteDoctor(Long id) {
+        if (doctorRepository.existsById(id)) {
+            doctorRepository.deleteById(id);
+        } else {
+            throw new IllegalStateException("Doctor does not exit");
+        }
+    }
+
+    // @Transactional
+    // public void updateDoctor(Long id, String name, Long deptId, String symptoms,
+    // String degrees) {
+    // Doctor doctor = doctorRepository.findById(id)
+    // .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));
+
+    // if (name != null && name.length() > 0) {
+    // doctor.setName(name);
+    // }
+    // // if (dept != null && dept.length() > 0) {
+    // // doctor.setDept(dept);
+    // // }
+    // if (deptId != null) {
+    // Department dept = departmentRepository.findById(deptId)
+    // .orElseThrow(() -> new IllegalStateException("Department does not exit"));
+    // doctor.setDept(dept);
+    // }
+
+    // if (symptoms != null && symptoms.length() > 0) {
+    // doctor.setSymptoms(symptoms);
+    // }
+    // if (degrees != null && degrees.length() > 0) {
+    // doctor.setDegrees(degrees);
+    // }
+    // }
+
+    @Transactional
+    public void updateDoctor(Long id, Doctor doctor) {
+        Doctor newDoctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));
+        boolean isDeptOk = departmentRepository.existsById(doctor.getDept_id());
+        boolean isSymptomOk = true;
+        boolean isDegreeOk = true;
+
+        if (doctor.getSymptom() != null) {
+            for (Long symptomId : doctor.getSymptom()) {
+                if (!symptomRepository.existsById(symptomId)) {
+                    isSymptomOk = false;
+                    break;
+                }
+            }
+        }
+        if (doctor.getDegree() != null) {
+            for (Long degreeId : doctor.getDegree()) {
+                if (!degreeRepository.existsById(degreeId)) {
+                    isSymptomOk = false;
+                    break;
+                }
+            }
+        }
+
+        // if (doctor.getDept() != null) {
+        // newDoctor.setDept(doctor.getDept());
+        // }
+
+        if (isDeptOk && isSymptomOk && isDegreeOk) {
+
+            if (doctor.getName() != null && doctor.getName().length() > 0) {
+                newDoctor.setName(doctor.getName());
+            }
+            if (doctor.getDept_id() != null) {
+                Department dept = departmentRepository.findById(doctor.getDept_id())
+                        .orElseThrow(() -> new IllegalStateException("Department does not exit"));
+                newDoctor.setDept_id(doctor.getDept_id());
+            }
+            if (doctor.getDegree() != null && doctor.getDegree().size() > 0) {
+                newDoctor.setDegree(doctor.getDegree());
+            }
+            if (doctor.getSymptom() != null && doctor.getSymptom().size() > 0) {
+                newDoctor.setSymptom(doctor.getSymptom());
+            }
+
+            System.out.println(newDoctor);
+
+        }
+
+    }
+
+    private final String FOLDER_PATH = "D:/dev/backend/java/java_backend/src/images/doctors/";
+    // private final String FOLDER_PATH = "/Users/javatechie/Desktop/MyFIles/";
+
+    public String uploadImageToFileSystem(Long id, MultipartFile file) throws IOException {
+        String filePath = FOLDER_PATH + "DOCTOR" + id + file.getOriginalFilename();
+
+        Doctor newDoctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));
+        // Doctor fileData = doctorRepository.save(Doctor.builder()
+        // // .name(file.getOriginalFilename())
+        // // .type(file.getContentType())
+        // .imageFilePath(filePath).build());
+        // System.out.println(newDoctor);
+        newDoctor.setImage_file_path(filePath);
+        System.out.println(newDoctor);
+        System.out.println(filePath);
+
+        file.transferTo(new File(filePath));
+
+        // if (fileData != null) {
+        return "Successful";
+        // }
+        // return "Error saving file";
+    }
+
+    public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
+        Optional<Doctor> fileData = doctorRepository.findByName(fileName);
+        String filePath = fileData.get().getImage_file_path();
+        byte[] images = Files.readAllBytes(new File(filePath).toPath());
+        return images;
+    }
+}
