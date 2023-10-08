@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.doctor.dto.DoctorDto;
 import com.example.demo.doctor.entity.Degree;
 import com.example.demo.doctor.entity.Doctor;
-import com.example.demo.doctor.entity.FileData;
+import com.example.demo.doctor.entity.DoctorImage;
 import com.example.demo.doctor.entity.Symptom;
 import com.example.demo.doctor.repositories.DegreeRepository;
 import com.example.demo.doctor.repositories.DepartmentRepository;
@@ -47,14 +47,14 @@ public class DoctorService {
         return doctorRepository.findAll();
     }
 
-    public FileData uploadImageToFileSystem(MultipartFile file) throws IOException {
+    public DoctorImage uploadImageToFileSystem(MultipartFile file) throws IOException {
 
-        FileData data = FileData.builder()
+        DoctorImage data = DoctorImage.builder()
                 .name("DOCTOR" + file.getOriginalFilename())
                 .type(file.getContentType())
                 .category("doctors")
                 .build();
-        FileData savedFile = imageRepository.save(data);
+        DoctorImage savedFile = imageRepository.save(data);
 
         DebugHelper.printData(savedFile.toString());
         String filePath = FOLDER_PATH + "DOCTOR" + savedFile.getId().toString() + file.getOriginalFilename();
@@ -65,7 +65,7 @@ public class DoctorService {
         savedFile.setFilePath(filePath);
         savedFile.setName("DOCTOR" + savedFile.getId().toString() + file.getOriginalFilename());
 
-        FileData final_data = imageRepository.save(savedFile);
+        DoctorImage final_data = imageRepository.save(savedFile);
         DebugHelper.printData(final_data.toString());
 
         if (final_data != null || file != null) {

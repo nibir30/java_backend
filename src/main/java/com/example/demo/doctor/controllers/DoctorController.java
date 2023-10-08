@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.doctor.dto.DoctorDto;
 import com.example.demo.doctor.entity.Doctor;
-import com.example.demo.doctor.entity.FileData;
+import com.example.demo.doctor.entity.DoctorImage;
 import com.example.demo.doctor.services.DoctorService;
 
 @RestController
@@ -42,11 +42,11 @@ public class DoctorController {
     }
 
     @PostMapping("/addImage")
-    public FileData addDoctorImage(
+    public DoctorImage addDoctorImage(
             @RequestParam("image") MultipartFile file)
 
             throws NumberFormatException, IOException {
-        FileData image = service.uploadImageToFileSystem(file);
+        DoctorImage image = service.uploadImageToFileSystem(file);
 
         if (image != null) {
             return image;

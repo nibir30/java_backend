@@ -17,10 +17,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@Entity(name = "Doctor_images")
+@Entity(name = "Symptom_images")
 @Table
 @ToString
-public class FileData {
+public class SymptomImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
