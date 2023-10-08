@@ -34,7 +34,7 @@ public class Doctor {
     @JoinColumn(name = "fk_doctor_degree", referencedColumnName = "id")
     private List<Degree> degree;
 
-    @ManyToMany(targetEntity = Degree.class, cascade = CascadeType.MERGE)
+    @ManyToMany(targetEntity = Symptom.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "fk_doctor_symptom", referencedColumnName = "id")
     private List<Symptom> symptom;
     private String image_file_path;

@@ -3,6 +3,7 @@ package com.example.demo.doctor.dto;
 import java.util.List;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
 
@@ -10,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class DoctorDto {
 
+    @NotNull(message = "Id should not be null")
     private Long id;
     @NotEmpty(message = "Project name should not be empty")
     private String name;

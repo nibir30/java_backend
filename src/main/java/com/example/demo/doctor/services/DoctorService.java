@@ -79,6 +79,8 @@ public class DoctorService {
 
     public Map<String, Object> addNewDoctor(DoctorDto doctorDto) {
 
+        DebugHelper.printData(doctorDto.toString());
+
         boolean isSymptomOk = true;
         boolean isDegreeOk = true;
         boolean isDeptOk = departmentRepository.existsById(doctorDto.getDeptId());

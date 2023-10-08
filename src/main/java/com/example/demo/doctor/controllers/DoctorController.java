@@ -38,9 +38,12 @@ public class DoctorController {
     @PostMapping()
     public Map<String, Object> addNewDoctor(@RequestBody DoctorDto doctorDto)
             throws NumberFormatException, IOException {
+
         Map<String, Object> result = service.addNewDoctor(doctorDto);
 
+        // return ResponseEntity.ok(result);
         return result;
+
     }
 
     @PostMapping("/addImage")
@@ -77,15 +80,6 @@ public class DoctorController {
     public void deleteDoctor(@PathVariable("doctorId") Long id) {
         service.deleteDoctor(id);
     }
-
-    // @PutMapping(path = "{doctorId}")
-    // public void updateDoctor(@PathVariable("doctorId") Long id,
-    // @RequestParam(required = false) String name,
-    // @RequestParam(required = false) String dept,
-    // @RequestParam(required = false) String symptoms,
-    // @RequestParam(required = false) String degrees) {
-    // service.updateDoctor(id, name, dept, symptoms, degrees);
-    // }
 
     @PostMapping(path = "/update")
     // @PostMapping(path = "/{doctorId}")
