@@ -3,29 +3,23 @@ package com.example.demo.doctor.services;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.doctor.dto.DoctorDto;
-import com.example.demo.doctor.entity.Degree;
-import com.example.demo.doctor.entity.Doctor;
-import com.example.demo.doctor.entity.DoctorImage;
-import com.example.demo.doctor.entity.Symptom;
-import com.example.demo.doctor.repositories.DegreeRepository;
-import com.example.demo.doctor.repositories.DepartmentRepository;
-import com.example.demo.doctor.repositories.DoctorRepository;
-import com.example.demo.doctor.repositories.ImageDoctorRepository;
-import com.example.demo.doctor.repositories.SymptomRepository;
+import com.example.demo.doctor.dto.EditDoctorDto;
+import com.example.demo.doctor.entity.*;
+import com.example.demo.doctor.repositories.*;
 import com.example.demo.helpers.DebugHelper;
 
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final DepartmentRepository departmentRepository;
@@ -33,18 +27,29 @@ public class DoctorService {
     private final DegreeRepository degreeRepository;
     private final ImageDoctorRepository imageRepository;
 
-    public DoctorService(DoctorRepository doctorRepository, DepartmentRepository departmentRepository,
-            SymptomRepository symptomRepository, DegreeRepository degreeRepository,
-            ImageDoctorRepository imageRepository) {
-        this.doctorRepository = doctorRepository;
-        this.departmentRepository = departmentRepository;
-        this.symptomRepository = symptomRepository;
-        this.degreeRepository = degreeRepository;
-        this.imageRepository = imageRepository;
-    }
-
     public List<Doctor> getDoctors() {
         return doctorRepository.findAll();
+    }
+
+    public DoctorImage updateImageFromFileSystem(MultipartFile file, String id) throws IOException {
+
+        Optional<DoctorImage> savedFile = imageRepository.findById(Long.parseLong(id));
+
+        if (savedFile != null) {
+            DebugHelper.printData(savedFile.toString());
+            String filePath = savedFile.get().getFilePath();
+
+            DebugHelper.printData(filePath);
+
+            file.transferTo(new File(filePath));
+            DoctorImage final_data = imageRepository.save(savedFile.get());
+            DebugHelper.printData(final_data.toString());
+
+            return final_data;
+        } else {
+            return null;
+        }
+
     }
 
     public DoctorImage uploadImageToFileSystem(MultipartFile file) throws IOException {
@@ -68,14 +73,9 @@ public class DoctorService {
         DoctorImage final_data = imageRepository.save(savedFile);
         DebugHelper.printData(final_data.toString());
 
-        if (final_data != null || file != null) {
-            return final_data;
-        }
-        return null;
+        return final_data;
 
     }
-
-    // public Map<String, String> addNewDoctor(Doctor doctor) {
 
     public Map<String, Object> addNewDoctor(DoctorDto doctorDto) {
 
@@ -114,14 +114,17 @@ public class DoctorService {
             List<Degree> degrees = new ArrayList<>();
 
             for (Long symptomId : doctorDto.getSymptomIds()) {
-                symptoms.add(symptomRepository.getReferenceById(symptomId));
+                symptoms.add(symptomRepository.findById(symptomId)
+                        .orElseThrow(() -> new IllegalStateException("symptom does not exit")));
             }
             for (Long degreeId : doctorDto.getDegreeIds()) {
-                degrees.add(degreeRepository.getReferenceById(degreeId));
+                degrees.add(degreeRepository.findById(degreeId)
+                        .orElseThrow(() -> new IllegalStateException("degree does not exit")));
             }
             doctor.setDegree(degrees);
             doctor.setSymptom(symptoms);
-            doctor.setDept(departmentRepository.getReferenceById(doctorDto.getDeptId()));
+            doctor.setDept(departmentRepository.findById(doctorDto.getDeptId())
+                    .orElseThrow(() -> new IllegalStateException("department does not exit")));
 
             Doctor savedDoctor = doctorRepository.save(doctor);
             DebugHelper.printData(savedDoctor.toString());
@@ -169,83 +172,62 @@ public class DoctorService {
         }
     }
 
-    // @Transactional
-    // public void updateDoctor(Long id, String name, Long deptId, String symptoms,
-    // String degrees) {
-    // Doctor doctor = doctorRepository.findById(id)
-    // .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));
+    @Transactional
+    // public void updateDoctor(Long id, DoctorDto doctor) {
 
-    // if (name != null && name.length() > 0) {
-    // doctor.setName(name);
-    // }
-    // // if (dept != null && dept.length() > 0) {
-    // // doctor.setDept(dept);
-    // // }
-    // if (deptId != null) {
-    // Department dept = departmentRepository.findById(deptId)
-    // .orElseThrow(() -> new IllegalStateException("Department does not exit"));
-    // doctor.setDept(dept);
-    // }
+    public Doctor updateDoctor(EditDoctorDto doctor) {
 
-    // if (symptoms != null && symptoms.length() > 0) {
-    // doctor.setSymptoms(symptoms);
-    // }
-    // if (degrees != null && degrees.length() > 0) {
-    // doctor.setDegrees(degrees);
-    // }
-    // }
+        Doctor newDoctor = doctorRepository.findById(doctor.getId())
+                .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));
+        DebugHelper.printData(newDoctor.toString());
 
-    // @Transactional
-    // public void updateDoctor(Long id, Doctor doctor) {
-    // Doctor newDoctor = doctorRepository.findById(id)
-    // .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));
-    // boolean isDeptOk = departmentRepository.existsById(doctor.getDept_id());
-    // boolean isSymptomOk = true;
-    // boolean isDegreeOk = true;
+        boolean isDeptOk = true;
+        boolean isSymptomOk = true;
+        boolean isDegreeOk = true;
 
-    // if (doctor.getSymptom() != null) {
-    // for (Long symptomId : doctor.getSymptom()) {
-    // if (!symptomRepository.existsById(symptomId)) {
-    // isSymptomOk = false;
-    // break;
-    // }
-    // }
-    // }
-    // if (doctor.getDegree() != null) {
-    // for (Long degreeId : doctor.getDegree()) {
-    // if (!degreeRepository.existsById(degreeId)) {
-    // isSymptomOk = false;
-    // break;
-    // }
-    // }
-    // }
+        List<Symptom> symptoms = new ArrayList<>();
+        List<Degree> degrees = new ArrayList<>();
 
-    // // if (doctor.getDept() != null) {
-    // // newDoctor.setDept(doctor.getDept());
-    // // }
+        if (doctor.getSymptomIds() != null) {
+            for (Long symptomId : doctor.getSymptomIds()) {
 
-    // if (isDeptOk && isSymptomOk && isDegreeOk) {
+                symptoms.add(symptomRepository.findById(symptomId)
+                        .orElseThrow(() -> new IllegalStateException("Symptom does not exit")));
+            }
+        }
+        if (doctor.getDegreeIds() != null) {
+            for (Long degreeId : doctor.getDegreeIds()) {
+                Degree newDegree = degreeRepository.findById(degreeId)
+                        .orElseThrow(() -> new IllegalStateException("Degree does not exit"));
+                degrees.add(
+                        newDegree);
 
-    // if (doctor.getName() != null && doctor.getName().length() > 0) {
-    // newDoctor.setName(doctor.getName());
-    // }
-    // if (doctor.getDept_id() != null) {
-    // Department dept = departmentRepository.findById(doctor.getDept_id())
-    // .orElseThrow(() -> new IllegalStateException("Department does not exit"));
-    // newDoctor.setDept_id(doctor.getDept_id());
-    // }
-    // if (doctor.getDegree() != null && doctor.getDegree().size() > 0) {
-    // newDoctor.setDegree(doctor.getDegree());
-    // }
-    // if (doctor.getSymptom() != null && doctor.getSymptom().size() > 0) {
-    // newDoctor.setSymptom(doctor.getSymptom());
-    // }
+            }
+        }
 
-    // System.out.println(newDoctor);
+        if (isDeptOk && isSymptomOk && isDegreeOk) {
+            if (doctor.getName() != null && doctor.getName().length() > 0) {
+                newDoctor.setName(doctor.getName());
+            }
+            if (doctor.getDeptId() != null) {
+                Department dept = departmentRepository.findById(doctor.getDeptId())
+                        .orElseThrow(() -> new IllegalStateException("Department does not exit"));
+                newDoctor.setDept(dept);
+            }
+            if (doctor.getDegreeIds() != null) {
+                newDoctor.setDegree(degrees);
+            }
+            if (doctor.getSymptomIds() != null) {
+                newDoctor.setSymptom(symptoms);
+            }
+            System.out.println(newDoctor.toString());
 
-    // }
+            return newDoctor;
+        }
 
-    // }
+        return null;
+
+    }
 
     // private final String FOLDER_PATH =
     // "D:/dev/backend/java/java_backend/src/images/doctors/";

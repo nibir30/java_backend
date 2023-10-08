@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.doctor.dto.DoctorDto;
+import com.example.demo.doctor.dto.EditDoctorDto;
 import com.example.demo.doctor.entity.Doctor;
 import com.example.demo.doctor.entity.DoctorImage;
 import com.example.demo.doctor.services.DoctorService;
+import com.example.demo.helpers.DebugHelper;
 
 @RestController
 @RequestMapping(path = "api/v1/doctors")
@@ -56,6 +58,21 @@ public class DoctorController {
 
     }
 
+    @PostMapping("/updateImage")
+    public DoctorImage updateDoctorImage(
+            @RequestParam("image") MultipartFile file, @RequestParam("id") String id)
+
+            throws NumberFormatException, IOException {
+        DoctorImage image = service.updateImageFromFileSystem(file, id);
+
+        if (image != null) {
+            return image;
+
+        }
+        return null;
+
+    }
+
     @DeleteMapping(path = "{doctorId}")
     public void deleteDoctor(@PathVariable("doctorId") Long id) {
         service.deleteDoctor(id);
@@ -70,9 +87,15 @@ public class DoctorController {
     // service.updateDoctor(id, name, dept, symptoms, degrees);
     // }
 
-    // @PostMapping(path = "{doctorId}")
-    // public void updateDoctor(@PathVariable("doctorId") Long id, @RequestBody
-    // Doctor doctor) {
-    // service.updateDoctor(id, doctor);
-    // }
+    @PostMapping(path = "/update")
+    // @PostMapping(path = "/{doctorId}")
+
+    public void updateDoctor(
+            // @PathVariable("doctorId") Long id,
+            @RequestBody EditDoctorDto doctor) {
+        DebugHelper.printData(doctor.toString());
+        service.updateDoctor(doctor);
+        // service.updateDoctor(id, doctor);
+
+    }
 }

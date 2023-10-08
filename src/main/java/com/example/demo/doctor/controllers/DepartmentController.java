@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.doctor.entity.Department;
 import com.example.demo.doctor.entity.DepartmentImage;
-import com.example.demo.doctor.entity.DoctorImage;
 import com.example.demo.doctor.services.DepartmentService;
 
 @RestController

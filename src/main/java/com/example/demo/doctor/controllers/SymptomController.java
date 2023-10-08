@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.doctor.entity.DepartmentImage;
 import com.example.demo.doctor.entity.Symptom;
 import com.example.demo.doctor.entity.SymptomImage;
 import com.example.demo.doctor.services.SymptomService;
