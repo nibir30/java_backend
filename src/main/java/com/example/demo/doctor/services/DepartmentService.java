@@ -1,29 +1,79 @@
 package com.example.demo.doctor.services;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.doctor.entity.Department;
+import com.example.demo.doctor.entity.DepartmentImage;
 import com.example.demo.doctor.repositories.DepartmentRepository;
+import com.example.demo.doctor.repositories.ImageDeptRepository;
+import com.example.demo.helpers.DebugHelper;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @Service
 public class DepartmentService {
     private final DepartmentRepository deptRepository;
-
-    public DepartmentService(DepartmentRepository deptRepository) {
-        this.deptRepository = deptRepository;
-    }
+    private final ImageDeptRepository imageRepository;
 
     public List<Department> getDepts() {
         return deptRepository.findAll();
     }
 
-    public void addNewDept(Department dept) {
+    private final String FOLDER_PATH = "D:/Dev/Backend/Java/tngl/java_backend/src/images/departments/";
+
+    public DepartmentImage uploadImageToFileSystem(MultipartFile file) throws IOException {
+
+        DepartmentImage data = DepartmentImage.builder()
+                .name("DEPARTMENT" + file.getOriginalFilename())
+                .type(file.getContentType())
+                .category("departments")
+                .build();
+        DepartmentImage savedFile = imageRepository.save(data);
+
+        DebugHelper.printData(savedFile.toString());
+        String filePath = FOLDER_PATH + "DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename();
+
+        DebugHelper.printData(filePath);
+
+        file.transferTo(new File(filePath));
+        savedFile.setFilePath(filePath);
+        savedFile.setName("DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename());
+
+        DepartmentImage final_data = imageRepository.save(savedFile);
+        DebugHelper.printData(final_data.toString());
+
+        if (final_data != null || file != null) {
+            return final_data;
+        }
+        return null;
+
+    }
+
+    public Map<String, Object> addNewDept(Department dept) {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        if (deptRepository.existsById(dept.getId())) {
+            result.put("id", dept.getId());
+            result.put("message", "Department already exists");
+            return result;
+        }
+
         deptRepository.save(dept);
+        result.put("id", dept.getId());
+        result.put("message", "Department added successfully");
         System.out.println(dept);
+
+        return result;
+
     }
 
     public void deleteDept(Long id) {

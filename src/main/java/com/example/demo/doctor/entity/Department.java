@@ -17,10 +17,11 @@ import lombok.ToString;
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String name;
     private String bangla_name;
+    private String file_path;
 
 }
