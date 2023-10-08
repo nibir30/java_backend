@@ -1,6 +1,8 @@
 package com.example.demo.doctor.controllers;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.doctor.entity.DepartmentImage;
 import com.example.demo.doctor.entity.Symptom;
+import com.example.demo.doctor.entity.SymptomImage;
 import com.example.demo.doctor.services.SymptomService;
 
 @RestController
@@ -28,9 +34,21 @@ public class SymptomController {
         return service.getSymptoms();
     }
 
+    @PostMapping("/addImage")
+    public SymptomImage addSympImage(
+            @RequestParam("image") MultipartFile file)
+            throws NumberFormatException, IOException {
+        SymptomImage image = service.uploadImageToFileSystem(file);
+        if (image != null) {
+            return image;
+        }
+        return null;
+    }
+
     @PostMapping
-    public void addNewSymptom(@RequestBody Symptom symptom) {
-        service.addNewSymptom(symptom);
+    public Map<String, Object> addNewSymptom(@RequestBody Symptom symptom) {
+        Map<String, Object> result = service.addNewSymptom(symptom);
+        return result;
     }
 
     @DeleteMapping(path = "{symptomId}")

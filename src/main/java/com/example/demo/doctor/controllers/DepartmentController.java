@@ -41,7 +41,7 @@ public class DepartmentController {
     }
 
     @PostMapping("/addImage")
-    public DepartmentImage addDoctorImage(
+    public DepartmentImage addDeptImage(
             @RequestParam("image") MultipartFile file)
             throws NumberFormatException, IOException {
         DepartmentImage image = service.uploadImageToFileSystem(file);
@@ -49,7 +49,6 @@ public class DepartmentController {
             return image;
         }
         return null;
-
     }
 
     @DeleteMapping(path = "{deptId}")

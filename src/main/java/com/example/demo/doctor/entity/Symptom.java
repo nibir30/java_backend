@@ -15,11 +15,12 @@ import lombok.Setter;
 public class Symptom {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
     private Long id;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String name;
     private String bangla_name;
+    private String file_path;
 
 }
