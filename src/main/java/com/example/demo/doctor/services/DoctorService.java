@@ -15,17 +15,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.doctor.dto.DoctorDto;
 import com.example.demo.doctor.entity.Degree;
-import com.example.demo.doctor.entity.Department;
 import com.example.demo.doctor.entity.Doctor;
 import com.example.demo.doctor.entity.FileData;
 import com.example.demo.doctor.entity.Symptom;
 import com.example.demo.doctor.repositories.DegreeRepository;
 import com.example.demo.doctor.repositories.DepartmentRepository;
 import com.example.demo.doctor.repositories.DoctorRepository;
+import com.example.demo.doctor.repositories.ImageDoctorRepository;
 import com.example.demo.doctor.repositories.SymptomRepository;
 import com.example.demo.helpers.DebugHelper;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class DoctorService {
@@ -33,13 +31,16 @@ public class DoctorService {
     private final DepartmentRepository departmentRepository;
     private final SymptomRepository symptomRepository;
     private final DegreeRepository degreeRepository;
+    private final ImageDoctorRepository imageRepository;
 
     public DoctorService(DoctorRepository doctorRepository, DepartmentRepository departmentRepository,
-            SymptomRepository symptomRepository, DegreeRepository degreeRepository) {
+            SymptomRepository symptomRepository, DegreeRepository degreeRepository,
+            ImageDoctorRepository imageRepository) {
         this.doctorRepository = doctorRepository;
         this.departmentRepository = departmentRepository;
         this.symptomRepository = symptomRepository;
         this.degreeRepository = degreeRepository;
+        this.imageRepository = imageRepository;
     }
 
     public List<Doctor> getDoctors() {
@@ -47,31 +48,42 @@ public class DoctorService {
     }
 
     public FileData uploadImageToFileSystem(MultipartFile file) throws IOException {
-        String filePath = FOLDER_PATH + "DOCTOR" + file.getOriginalFilename();
 
         FileData data = FileData.builder()
                 .name("DOCTOR" + file.getOriginalFilename())
                 .type(file.getContentType())
-                .filePath(filePath).build();
-        DebugHelper.printData(data.toString());
+                .category("doctors")
+                .build();
+        FileData savedFile = imageRepository.save(data);
+
+        DebugHelper.printData(savedFile.toString());
+        String filePath = FOLDER_PATH + "DOCTOR" + savedFile.getId().toString() + file.getOriginalFilename();
+
         DebugHelper.printData(filePath);
 
         file.transferTo(new File(filePath));
+        savedFile.setFilePath(filePath);
+        savedFile.setName("DOCTOR" + savedFile.getId().toString() + file.getOriginalFilename());
 
-        if (data != null) {
-            return data;
-        } else {
-            return null;
+        FileData final_data = imageRepository.save(savedFile);
+        DebugHelper.printData(final_data.toString());
+
+        if (final_data != null || file != null) {
+            return final_data;
         }
+        return null;
+
     }
 
     // public Map<String, String> addNewDoctor(Doctor doctor) {
 
-    public Map<String, String> addNewDoctor(DoctorDto doctorDto) {
+    public Map<String, Object> addNewDoctor(DoctorDto doctorDto) {
 
         boolean isSymptomOk = true;
         boolean isDegreeOk = true;
         boolean isDeptOk = departmentRepository.existsById(doctorDto.getDeptId());
+
+        DebugHelper.printData(doctorDto.toString());
 
         for (Long symptomId : doctorDto.getSymptomIds()) {
             if (!symptomRepository.existsById(symptomId)) {
@@ -85,9 +97,16 @@ public class DoctorService {
                 break;
             }
         }
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, Object> result = new HashMap<String, Object>();
         if (isDeptOk && isSymptomOk && isDegreeOk) {
             Doctor doctor = new Doctor();
+            if (doctorRepository.existsById(doctorDto.getId())) {
+                result.put("id", doctorDto.getId());
+                result.put("message", "Doctor already exists");
+                return result;
+            }
+
+            doctor.setId(doctorDto.getId());
             BeanUtils.copyProperties(doctorDto, doctor);
             List<Symptom> symptoms = new ArrayList<>();
             List<Degree> degrees = new ArrayList<>();
@@ -104,7 +123,7 @@ public class DoctorService {
 
             Doctor savedDoctor = doctorRepository.save(doctor);
             DebugHelper.printData(savedDoctor.toString());
-            result.put("id", savedDoctor.getId().toString());
+            result.put("id", savedDoctor.getId());
             result.put("message", "Doctor added successfully");
             return result;
 
@@ -216,8 +235,9 @@ public class DoctorService {
 
     // }
 
-    private final String FOLDER_PATH = "D:/dev/backend/java/java_backend/src/images/doctors/";
-    // private final String FOLDER_PATH = "/Users/javatechie/Desktop/MyFIles/";
+    // private final String FOLDER_PATH =
+    // "D:/dev/backend/java/java_backend/src/images/doctors/";
+    private final String FOLDER_PATH = "D:/Dev/Backend/Java/tngl/java_backend/src/images/doctors/";
 
     public String uploadImageToFileSystem(Long id, MultipartFile file) throws IOException {
         String filePath = FOLDER_PATH + "DOCTOR" + id + file.getOriginalFilename();

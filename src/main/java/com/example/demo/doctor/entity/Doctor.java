@@ -17,7 +17,8 @@ import lombok.NoArgsConstructor;
 public class Doctor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
     @Column(nullable = false)
     private String name;

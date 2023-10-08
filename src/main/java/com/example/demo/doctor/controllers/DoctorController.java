@@ -34,9 +34,9 @@ public class DoctorController {
     }
 
     @PostMapping()
-    public Map<String, String> addNewDoctor(@RequestBody DoctorDto doctorDto)
+    public Map<String, Object> addNewDoctor(@RequestBody DoctorDto doctorDto)
             throws NumberFormatException, IOException {
-        Map<String, String> result = service.addNewDoctor(doctorDto);
+        Map<String, Object> result = service.addNewDoctor(doctorDto);
 
         return result;
     }

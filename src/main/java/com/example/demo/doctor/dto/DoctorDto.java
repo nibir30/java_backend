@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 public class DoctorDto {
 
+    private Long id;
     @NotEmpty(message = "Project name should not be empty")
     private String name;
     @NotEmpty(message = "Phone should not be empty")
