@@ -49,7 +49,6 @@ public class DoctorService {
         } else {
             return null;
         }
-
     }
 
     public DoctorImage uploadImageToFileSystem(MultipartFile file) throws IOException {

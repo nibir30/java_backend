@@ -44,6 +44,19 @@ public class SymptomController {
         return null;
     }
 
+    @PostMapping("/updateImage")
+    public SymptomImage updateDoctorImage(
+            @RequestParam("image") MultipartFile file, @RequestParam("id") String id)
+
+            throws NumberFormatException, IOException {
+        SymptomImage image = service.updateImageFromFileSystem(file, id);
+        if (image != null) {
+            return image;
+
+        }
+        return null;
+    }
+
     @PostMapping
     public Map<String, Object> addNewSymptom(@RequestBody Symptom symptom) {
         Map<String, Object> result = service.addNewSymptom(symptom);

@@ -67,13 +67,11 @@ public class DoctorController {
 
             throws NumberFormatException, IOException {
         DoctorImage image = service.updateImageFromFileSystem(file, id);
-
         if (image != null) {
             return image;
 
         }
         return null;
-
     }
 
     @DeleteMapping(path = "{doctorId}")

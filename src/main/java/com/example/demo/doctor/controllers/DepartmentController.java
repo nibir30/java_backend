@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.doctor.entity.Department;
 import com.example.demo.doctor.entity.DepartmentImage;
+import com.example.demo.doctor.entity.DoctorImage;
 import com.example.demo.doctor.services.DepartmentService;
 
 @RestController
@@ -44,6 +45,18 @@ public class DepartmentController {
             @RequestParam("image") MultipartFile file)
             throws NumberFormatException, IOException {
         DepartmentImage image = service.uploadImageToFileSystem(file);
+        if (image != null) {
+            return image;
+        }
+        return null;
+    }
+
+    @PostMapping("/updateImage")
+    public DepartmentImage updateDoctorImage(
+            @RequestParam("image") MultipartFile file, @RequestParam("id") String id)
+
+            throws NumberFormatException, IOException {
+        DepartmentImage image = service.updateImageFromFileSystem(file, id);
         if (image != null) {
             return image;
         }

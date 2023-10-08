@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -78,6 +79,26 @@ public class DepartmentService {
 
         return result;
 
+    }
+
+    public DepartmentImage updateImageFromFileSystem(MultipartFile file, String id) throws IOException {
+
+        Optional<DepartmentImage> savedFile = imageRepository.findById(Long.parseLong(id));
+
+        if (savedFile != null) {
+            DebugHelper.printData(savedFile.toString());
+            String filePath = savedFile.get().getFilePath();
+
+            DebugHelper.printData(filePath);
+
+            file.transferTo(new File(filePath));
+            DepartmentImage final_data = imageRepository.save(savedFile.get());
+            DebugHelper.printData(final_data.toString());
+
+            return final_data;
+        } else {
+            return null;
+        }
     }
 
     public void deleteDept(Long id) {

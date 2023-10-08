@@ -38,15 +38,6 @@ public class DegreeController {
         service.deleteSymptom(id);
     }
 
-    // @PutMapping(path = "{degreeId}")
-    // public void updateDoctor(@PathVariable("degreeId") Long id,
-    // @RequestParam(required = false) String name,
-    // @RequestParam(required = false) String degree,
-    // @RequestParam(required = false) String degree,
-    // @RequestParam(required = false) String degrees) {
-    // service.updateDoctor(id, name, degree, degree, degrees);
-    // }
-
     @PostMapping(path = "{degreeId}")
     public void updateSymptom(@PathVariable("degreeId") Long id, @RequestBody Degree degree) {
         service.updateSymptom(id, degree);

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,6 +75,27 @@ public class SymptomService {
             return final_data;
         }
         return null;
+
+    }
+
+    public SymptomImage updateImageFromFileSystem(MultipartFile file, String id) throws IOException {
+
+        Optional<SymptomImage> savedFile = imageRepository.findById(Long.parseLong(id));
+
+        if (savedFile != null) {
+            DebugHelper.printData(savedFile.toString());
+            String filePath = savedFile.get().getFilePath();
+
+            DebugHelper.printData(filePath);
+
+            file.transferTo(new File(filePath));
+            SymptomImage final_data = imageRepository.save(savedFile.get());
+            DebugHelper.printData(final_data.toString());
+
+            return final_data;
+        } else {
+            return null;
+        }
 
     }
 
