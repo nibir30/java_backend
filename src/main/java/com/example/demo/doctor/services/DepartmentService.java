@@ -64,12 +64,16 @@ public class DepartmentService {
         if (deptRepository.existsById(dept.getId())) {
             result.put("id", dept.getId());
             result.put("message", "Department already exists");
+            result.put("isSuccess", false);
+
             return result;
         }
 
         deptRepository.save(dept);
         result.put("id", dept.getId());
         result.put("message", "Department added successfully");
+        result.put("isSuccess", true);
+
         System.out.println(dept);
 
         return result;

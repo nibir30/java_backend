@@ -103,6 +103,8 @@ public class DoctorService {
             if (doctorRepository.existsById(doctorDto.getId())) {
                 result.put("id", doctorDto.getId());
                 result.put("message", "Doctor already exists");
+                result.put("isSuccess", false);
+
                 return result;
             }
 
@@ -125,27 +127,37 @@ public class DoctorService {
             DebugHelper.printData(savedDoctor.toString());
             result.put("id", savedDoctor.getId());
             result.put("message", "Doctor added successfully");
+            result.put("isSuccess", true);
+
             return result;
 
         } else {
             if (!isDeptOk) {
                 result.put("id", null);
                 result.put("message", "Department does not exist");
+                result.put("isSuccess", false);
+
                 return result;
             }
             if (!isSymptomOk) {
                 result.put("id", null);
                 result.put("message", "Symptom does not exist");
+                result.put("isSuccess", false);
+
                 return result;
             }
             if (!isDegreeOk) {
                 result.put("id", null);
                 result.put("message", "Degree does not exist");
+                result.put("isSuccess", false);
+
                 return result;
             }
         }
         result.put("id", null);
         result.put("message", "Error");
+        result.put("isSuccess", false);
+
         return result;
     }
 

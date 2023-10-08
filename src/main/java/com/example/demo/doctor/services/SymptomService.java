@@ -33,11 +33,15 @@ public class SymptomService {
         if (symptomRepository.existsById(symptom.getId())) {
             result.put("id", symptom.getId());
             result.put("message", "Symptom already exists");
+            result.put("isSuccess", false);
+
             return result;
         }
         symptomRepository.save(symptom);
         result.put("id", symptom.getId());
         result.put("message", "Symptom added successfully");
+        result.put("isSuccess", true);
+
         System.out.println(symptom);
 
         return result;
@@ -107,6 +111,9 @@ public class SymptomService {
         }
         if (symptom.getBangla_name() != null && symptom.getBangla_name().length() > 0) {
             newSymptom.setBangla_name(symptom.getBangla_name());
+        }
+        if (symptom.getFile_path() != null && symptom.getFile_path().length() > 0) {
+            newSymptom.setFile_path(symptom.getFile_path());
         }
     }
 }
