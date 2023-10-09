@@ -14,6 +14,7 @@ import com.example.demo.doctor.entity.Department;
 import com.example.demo.doctor.entity.DepartmentImage;
 import com.example.demo.doctor.repositories.DepartmentRepository;
 import com.example.demo.doctor.repositories.ImageDeptRepository;
+import com.example.demo.helpers.AppConstant;
 import com.example.demo.helpers.DebugHelper;
 
 import jakarta.transaction.Transactional;
@@ -29,7 +30,7 @@ public class DepartmentService {
         return deptRepository.findAll();
     }
 
-    private final String FOLDER_PATH = "D:/Dev/Backend/Java/tngl/java_backend/src/images/departments/";
+    private final String FOLDER_PATH = AppConstant.folder_path + "/departments/";
 
     public DepartmentImage uploadImageToFileSystem(MultipartFile file) throws IOException {
 
@@ -41,13 +42,21 @@ public class DepartmentService {
         DepartmentImage savedFile = imageRepository.save(data);
 
         DebugHelper.printData(savedFile.toString());
-        String filePath = FOLDER_PATH + "DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename();
+        String name = "";
+        if (file.getOriginalFilename().endsWith(".png") || file.getOriginalFilename().endsWith(".jpg")) {
+            DebugHelper.printData("Paisiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            name = "DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename();
+        } else {
+            DebugHelper.printData("NAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            name = "DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename() + ".png";
+        }
+        String filePath = FOLDER_PATH + name;
 
         DebugHelper.printData(filePath);
 
         file.transferTo(new File(filePath));
         savedFile.setFilePath(filePath);
-        savedFile.setName("DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename());
+        savedFile.setName(name);
 
         DepartmentImage final_data = imageRepository.save(savedFile);
         DebugHelper.printData(final_data.toString());

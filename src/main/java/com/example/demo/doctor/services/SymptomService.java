@@ -14,6 +14,7 @@ import com.example.demo.doctor.entity.SymptomImage;
 import com.example.demo.doctor.entity.Symptom;
 import com.example.demo.doctor.repositories.ImageSympRepository;
 import com.example.demo.doctor.repositories.SymptomRepository;
+import com.example.demo.helpers.AppConstant;
 import com.example.demo.helpers.DebugHelper;
 
 import jakarta.transaction.Transactional;
@@ -48,7 +49,7 @@ public class SymptomService {
         return result;
     }
 
-    private final String FOLDER_PATH = "D:/Dev/Backend/Java/tngl/java_backend/src/images/symptoms/";
+    private final String FOLDER_PATH = AppConstant.folder_path + "/symptoms/";
 
     public SymptomImage uploadImageToFileSystem(MultipartFile file) throws IOException {
 

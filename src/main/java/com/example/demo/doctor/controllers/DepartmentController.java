@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.doctor.dto.SendDeptDataDto;
 import com.example.demo.doctor.entity.Department;
 import com.example.demo.doctor.entity.DepartmentImage;
-import com.example.demo.doctor.entity.DoctorImage;
 import com.example.demo.doctor.services.DepartmentService;
 
 @RestController
@@ -29,9 +29,14 @@ public class DepartmentController {
         this.service = service;
     }
 
+    // @GetMapping
+    // public List<Department> getDepartments() {
+    // return service.getDepts();
+    // }
     @GetMapping
-    public List<Department> getDepartments() {
-        return service.getDepts();
+    public SendDeptDataDto getDepartments() {
+        SendDeptDataDto department = new SendDeptDataDto(service.getDepts());
+        return department;
     }
 
     @PostMapping

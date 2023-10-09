@@ -13,6 +13,7 @@ import com.example.demo.doctor.dto.DoctorDto;
 import com.example.demo.doctor.dto.EditDoctorDto;
 import com.example.demo.doctor.entity.*;
 import com.example.demo.doctor.repositories.*;
+import com.example.demo.helpers.AppConstant;
 import com.example.demo.helpers.DebugHelper;
 
 import jakarta.transaction.Transactional;
@@ -232,7 +233,7 @@ public class DoctorService {
 
     // private final String FOLDER_PATH =
     // "D:/dev/backend/java/java_backend/src/images/doctors/";
-    private final String FOLDER_PATH = "D:/Dev/Backend/Java/tngl/java_backend/src/images/doctors/";
+    private final String FOLDER_PATH = AppConstant.folder_path + "/doctors/";
 
     public String uploadImageToFileSystem(Long id, MultipartFile file) throws IOException {
         String filePath = FOLDER_PATH + "DOCTOR" + id + file.getOriginalFilename();
