@@ -2,6 +2,7 @@ package com.example.demo.doctor.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,57 +50,6 @@ public class SymptomService {
         return result;
     }
 
-    private final String FOLDER_PATH = AppConstant.folder_path + "/symptoms/";
-
-    public SymptomImage uploadImageToFileSystem(MultipartFile file) throws IOException {
-
-        SymptomImage data = SymptomImage.builder()
-                .name("SYMPTOM" + file.getOriginalFilename())
-                .type(file.getContentType())
-                .category("symptoms")
-                .build();
-        SymptomImage savedFile = imageRepository.save(data);
-
-        DebugHelper.printData(savedFile.toString());
-        String filePath = FOLDER_PATH + "SYMPTOM" + savedFile.getId().toString() + file.getOriginalFilename();
-
-        DebugHelper.printData(filePath);
-
-        file.transferTo(new File(filePath));
-        savedFile.setFilePath(filePath);
-        savedFile.setName("SYMPTOM" + savedFile.getId().toString() + file.getOriginalFilename());
-
-        SymptomImage final_data = imageRepository.save(savedFile);
-        DebugHelper.printData(final_data.toString());
-
-        if (final_data != null || file != null) {
-            return final_data;
-        }
-        return null;
-
-    }
-
-    public SymptomImage updateImageFromFileSystem(MultipartFile file, String id) throws IOException {
-
-        Optional<SymptomImage> savedFile = imageRepository.findById(Long.parseLong(id));
-
-        if (savedFile != null) {
-            DebugHelper.printData(savedFile.toString());
-            String filePath = savedFile.get().getFilePath();
-
-            DebugHelper.printData(filePath);
-
-            file.transferTo(new File(filePath));
-            SymptomImage final_data = imageRepository.save(savedFile.get());
-            DebugHelper.printData(final_data.toString());
-
-            return final_data;
-        } else {
-            return null;
-        }
-
-    }
-
     public void deleteSymptom(Long id) {
 
         if (symptomRepository.existsById(id)) {
@@ -137,6 +87,72 @@ public class SymptomService {
         }
         if (symptom.getFile_path() != null && symptom.getFile_path().length() > 0) {
             newSymptom.setFile_path(symptom.getFile_path());
+        }
+    }
+
+    private final String FOLDER_PATH = AppConstant.folder_path + "/symptoms/";
+
+    public SymptomImage uploadImageToFileSystem(MultipartFile file) throws IOException {
+
+        SymptomImage data = SymptomImage.builder()
+                .name("SYMPTOM" + file.getOriginalFilename())
+                .type(file.getContentType())
+                .category("symptoms")
+                .build();
+        SymptomImage savedFile = imageRepository.save(data);
+
+        DebugHelper.printData(savedFile.toString());
+        String filePath = FOLDER_PATH + "SYMPTOM" + savedFile.getId().toString() + file.getOriginalFilename();
+
+        DebugHelper.printData(filePath);
+
+        if (file != null) {
+            file.transferTo(new File(filePath));
+        }
+        savedFile.setFilePath(filePath);
+        savedFile.setName("SYMPTOM" + savedFile.getId().toString() + file.getOriginalFilename());
+
+        SymptomImage final_data = imageRepository.save(savedFile);
+        DebugHelper.printData(final_data.toString());
+
+        return final_data;
+
+    }
+
+    public SymptomImage updateImageFromFileSystem(MultipartFile file, String id) throws IOException {
+
+        Optional<SymptomImage> savedFile = imageRepository.findById(Long.parseLong(id));
+
+        if (savedFile != null) {
+            DebugHelper.printData(savedFile.toString());
+            String filePath = savedFile.get().getFilePath();
+
+            DebugHelper.printData(filePath);
+
+            file.transferTo(new File(filePath));
+            SymptomImage final_data = imageRepository.save(savedFile.get());
+            DebugHelper.printData(final_data.toString());
+
+            return final_data;
+        } else {
+            return null;
+        }
+
+    }
+
+    public byte[] getImage(Long id) throws IOException {
+
+        Optional<SymptomImage> savedFile = imageRepository.findById(id);
+
+        if (savedFile != null) {
+            DebugHelper.printData(savedFile.toString());
+            String filePath = savedFile.get().getFilePath();
+
+            DebugHelper.printData(filePath);
+            byte[] image = Files.readAllBytes(new File(filePath).toPath());
+            return image;
+        } else {
+            return null;
         }
     }
 }

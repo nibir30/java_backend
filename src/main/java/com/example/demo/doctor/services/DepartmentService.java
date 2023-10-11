@@ -2,6 +2,7 @@ package com.example.demo.doctor.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,44 +31,6 @@ public class DepartmentService {
         return deptRepository.findAll();
     }
 
-    private final String FOLDER_PATH = AppConstant.folder_path + "/departments/";
-
-    public DepartmentImage uploadImageToFileSystem(MultipartFile file) throws IOException {
-
-        DepartmentImage data = DepartmentImage.builder()
-                .name("DEPARTMENT" + file.getOriginalFilename())
-                .type(file.getContentType())
-                .category("departments")
-                .build();
-        DepartmentImage savedFile = imageRepository.save(data);
-
-        DebugHelper.printData(savedFile.toString());
-        String name = "";
-        if (file.getOriginalFilename().endsWith(".png") || file.getOriginalFilename().endsWith(".jpg")) {
-            DebugHelper.printData("Paisiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-            name = "DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename();
-        } else {
-            DebugHelper.printData("NAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            name = "DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename() + ".png";
-        }
-        String filePath = FOLDER_PATH + name;
-
-        DebugHelper.printData(filePath);
-
-        file.transferTo(new File(filePath));
-        savedFile.setFilePath(filePath);
-        savedFile.setName(name);
-
-        DepartmentImage final_data = imageRepository.save(savedFile);
-        DebugHelper.printData(final_data.toString());
-
-        if (final_data != null || file != null) {
-            return final_data;
-        }
-        return null;
-
-    }
-
     public Map<String, Object> addNewDept(Department dept) {
         Map<String, Object> result = new HashMap<String, Object>();
 
@@ -88,26 +51,6 @@ public class DepartmentService {
 
         return result;
 
-    }
-
-    public DepartmentImage updateImageFromFileSystem(MultipartFile file, String id) throws IOException {
-
-        Optional<DepartmentImage> savedFile = imageRepository.findById(Long.parseLong(id));
-
-        if (savedFile != null) {
-            DebugHelper.printData(savedFile.toString());
-            String filePath = savedFile.get().getFilePath();
-
-            DebugHelper.printData(filePath);
-
-            file.transferTo(new File(filePath));
-            DepartmentImage final_data = imageRepository.save(savedFile.get());
-            DebugHelper.printData(final_data.toString());
-
-            return final_data;
-        } else {
-            return null;
-        }
     }
 
     public void deleteDept(Long id) {
@@ -144,6 +87,77 @@ public class DepartmentService {
         }
         if (dept.getBangla_name() != null && dept.getBangla_name().length() > 0) {
             newDept.setBangla_name(dept.getBangla_name());
+        }
+    }
+
+    private final String FOLDER_PATH = AppConstant.folder_path + "/departments/";
+
+    public DepartmentImage uploadImageToFileSystem(MultipartFile file) throws IOException {
+
+        DepartmentImage data = DepartmentImage.builder()
+                .name("DEPARTMENT" + file.getOriginalFilename())
+                .type(file.getContentType())
+                .category("departments")
+                .build();
+        DepartmentImage savedFile = imageRepository.save(data);
+
+        DebugHelper.printData(savedFile.toString());
+        String name = "";
+        if (file.getOriginalFilename().endsWith(".png") || file.getOriginalFilename().endsWith(".jpg")) {
+            DebugHelper.printData("Paisiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            name = "DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename();
+        } else {
+            DebugHelper.printData("NAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            name = "DEPARTMENT" + savedFile.getId().toString() + file.getOriginalFilename() + ".png";
+        }
+        String filePath = FOLDER_PATH + name;
+
+        DebugHelper.printData(filePath);
+
+        file.transferTo(new File(filePath));
+        savedFile.setFilePath(filePath);
+        savedFile.setName(name);
+
+        DepartmentImage final_data = imageRepository.save(savedFile);
+        DebugHelper.printData(final_data.toString());
+
+        return final_data;
+
+    }
+
+    public DepartmentImage updateImageFromFileSystem(MultipartFile file, String id) throws IOException {
+
+        Optional<DepartmentImage> savedFile = imageRepository.findById(Long.parseLong(id));
+
+        if (savedFile != null) {
+            DebugHelper.printData(savedFile.toString());
+            String filePath = savedFile.get().getFilePath();
+
+            DebugHelper.printData(filePath);
+
+            file.transferTo(new File(filePath));
+            DepartmentImage final_data = imageRepository.save(savedFile.get());
+            DebugHelper.printData(final_data.toString());
+
+            return final_data;
+        } else {
+            return null;
+        }
+    }
+
+    public byte[] getImage(Long id) throws IOException {
+
+        Optional<DepartmentImage> savedFile = imageRepository.findById(id);
+
+        if (savedFile != null) {
+            DebugHelper.printData(savedFile.toString());
+            String filePath = savedFile.get().getFilePath();
+
+            DebugHelper.printData(filePath);
+            byte[] image = Files.readAllBytes(new File(filePath).toPath());
+            return image;
+        } else {
+            return null;
         }
     }
 }

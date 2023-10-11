@@ -1,9 +1,11 @@
 package com.example.demo.doctor.controllers;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,17 +75,14 @@ public class DepartmentController {
         service.deleteDept(id);
     }
 
-    // @PutMapping(path = "{deptId}")
-    // public void updateDoctor(@PathVariable("deptId") Long id,
-    // @RequestParam(required = false) String name,
-    // @RequestParam(required = false) String dept,
-    // @RequestParam(required = false) String symptoms,
-    // @RequestParam(required = false) String degrees) {
-    // service.updateDoctor(id, name, dept, symptoms, degrees);
-    // }
-
     @PostMapping(path = "{deptId}")
     public void updateDept(@PathVariable("deptId") Long id, @RequestBody Department dept) {
         service.updateDept(id, dept);
+    }
+
+    @GetMapping("/getImage/{deptId}")
+    public ResponseEntity<?> getDepartments(@PathVariable("deptId") Long id) throws IOException {
+        byte[] image = service.getImage(id);
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(image);
     }
 }

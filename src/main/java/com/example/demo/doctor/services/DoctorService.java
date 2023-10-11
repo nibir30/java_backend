@@ -257,10 +257,19 @@ public class DoctorService {
         // return "Error saving file";
     }
 
-    public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
-        Optional<Doctor> fileData = doctorRepository.findByName(fileName);
-        String filePath = fileData.get().getImage_file_path();
-        byte[] images = Files.readAllBytes(new File(filePath).toPath());
-        return images;
+    public byte[] getImage(Long id) throws IOException {
+
+        Optional<DoctorImage> savedFile = imageRepository.findById(id);
+
+        if (savedFile != null) {
+            DebugHelper.printData(savedFile.toString());
+            String filePath = savedFile.get().getFilePath();
+
+            DebugHelper.printData(filePath);
+            byte[] image = Files.readAllBytes(new File(filePath).toPath());
+            return image;
+        } else {
+            return null;
+        }
     }
 }

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,5 +92,11 @@ public class DoctorController {
         service.updateDoctor(doctor);
         // service.updateDoctor(id, doctor);
 
+    }
+
+    @GetMapping("/getImage/{doctorId}")
+    public ResponseEntity<?> getDepartments(@PathVariable("doctorId") Long id) throws IOException {
+        byte[] image = service.getImage(id);
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(image);
     }
 }
