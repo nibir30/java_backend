@@ -39,7 +39,7 @@ public class BloodGroupController {
         service.deleteBloodGroup(id);
     }
 
-    @PostMapping(path = "{groupId}")
+    @PostMapping(path = "/update/{groupId}")
     public void updateBloodGroup(@PathVariable("groupId") Long id, @RequestBody BloodGroup group) {
         service.updateBloodGroup(id, group);
     }

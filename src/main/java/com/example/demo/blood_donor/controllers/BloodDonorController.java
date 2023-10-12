@@ -39,7 +39,7 @@ public class BloodDonorController {
         service.deleteBloodDonor(id);
     }
 
-    @PostMapping(path = "{donorId}")
+    @PostMapping(path = "update/{donorId}")
     public void updateBloodDonor(@PathVariable("donorId") Long id, @RequestBody AddDonorDto donor) {
         service.updateBloodDonor(id, donor);
     }
