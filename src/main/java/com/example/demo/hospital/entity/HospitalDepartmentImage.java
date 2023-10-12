@@ -1,4 +1,4 @@
-package com.example.demo.doctor.entity;
+package com.example.demo.hospital.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,10 +17,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@Entity(name = "Symptom_image")
+@Entity(name = "Hospital_department_images")
 @Table
 @ToString
-public class SymptomImage {
+public class HospitalDepartmentImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

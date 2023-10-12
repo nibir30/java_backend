@@ -30,15 +30,6 @@ public class BloodDonorService {
     public Map<String, Object> addNewBloodDonor(AddDonorDto bloodDonor) {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        // Optional<BloodDonor> existingBloodDonor =
-        // repository.findByName(bloodDonor.getName());
-        // if (existingBloodDonor.isPresent()) {
-        // result.put("name", bloodDonor.getName());
-        // result.put("message", "BloodDonor already exists");
-        // result.put("isSuccess", false);
-
-        // return result;
-        // }
         BloodDonor donor = bloodDonor.dtoToDonorEntity(groupRepository);
         if (donor != null) {
             repository.save(donor);

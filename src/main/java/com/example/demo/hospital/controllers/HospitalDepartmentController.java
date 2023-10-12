@@ -1,4 +1,4 @@
-package com.example.demo.doctor.controllers;
+package com.example.demo.hospital.controllers;
 
 import java.io.IOException;
 import java.util.Map;
@@ -16,40 +16,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.doctor.dto.SendDeptDataDto;
-import com.example.demo.doctor.entity.Department;
-import com.example.demo.doctor.entity.DepartmentImage;
-import com.example.demo.doctor.services.DepartmentService;
-
-import lombok.AllArgsConstructor;
+import com.example.demo.hospital.dto.SendDeptDataDto;
+import com.example.demo.hospital.entity.HospitalDepartment;
+import com.example.demo.hospital.entity.HospitalDepartmentImage;
+import com.example.demo.hospital.services.HospitalDepartmentService;
 
 @RestController
-@RequestMapping(path = "api/v1/departments")
-@AllArgsConstructor
-public class DepartmentController {
-    private final DepartmentService service;
+@RequestMapping(path = "api/v1/hospitals/departments")
+public class HospitalDepartmentController {
+    private final HospitalDepartmentService service;
+
+    // @Autowired
+    public HospitalDepartmentController(HospitalDepartmentService service) {
+        this.service = service;
+    }
 
     // @GetMapping
-    // public List<Department> getDepartments() {
+    // public List<HospitalDepartment> getHospitalDepartments() {
     // return service.getDepts();
     // }
     @GetMapping
-    public SendDeptDataDto getDepartments() {
+    public SendDeptDataDto getHospitalDepartments() {
         SendDeptDataDto department = new SendDeptDataDto(service.getDepts());
         return department;
     }
 
     @PostMapping
-    public Map<String, Object> addNewDept(@RequestBody Department dept) {
+    public Map<String, Object> addNewHospitalDept(@RequestBody HospitalDepartment dept) {
         Map<String, Object> result = service.addNewDept(dept);
         return result;
     }
 
     @PostMapping("/addImage")
-    public DepartmentImage addDeptImage(
+    public HospitalDepartmentImage addDeptImage(
             @RequestParam("image") MultipartFile file)
             throws NumberFormatException, IOException {
-        DepartmentImage image = service.uploadImageToFileSystem(file);
+        HospitalDepartmentImage image = service.uploadImageToFileSystem(file);
         if (image != null) {
             return image;
         }
@@ -57,11 +59,11 @@ public class DepartmentController {
     }
 
     @PostMapping("/updateImage")
-    public DepartmentImage updateDoctorImage(
+    public HospitalDepartmentImage updateHospitalImage(
             @RequestParam("image") MultipartFile file, @RequestParam("id") String id)
 
             throws NumberFormatException, IOException {
-        DepartmentImage image = service.updateImageFromFileSystem(file, id);
+        HospitalDepartmentImage image = service.updateImageFromFileSystem(file, id);
         if (image != null) {
             return image;
         }
@@ -69,17 +71,17 @@ public class DepartmentController {
     }
 
     @DeleteMapping(path = "{deptId}")
-    public void deleteDept(@PathVariable("deptId") Long id) {
+    public void deleteHospitalDept(@PathVariable("deptId") Long id) {
         service.deleteDept(id);
     }
 
     @PostMapping(path = "{deptId}")
-    public void updateDept(@PathVariable("deptId") Long id, @RequestBody Department dept) {
+    public void updateDept(@PathVariable("deptId") Long id, @RequestBody HospitalDepartment dept) {
         service.updateDept(id, dept);
     }
 
     @GetMapping("/getImage/{deptId}")
-    public ResponseEntity<?> getDepartments(@PathVariable("deptId") Long id) throws IOException {
+    public ResponseEntity<?> getHospitalDepartments(@PathVariable("deptId") Long id) throws IOException {
         byte[] image = service.getImage(id);
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(image);
     }
