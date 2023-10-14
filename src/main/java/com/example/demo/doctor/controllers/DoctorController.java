@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.blood_donor.dtos.SendDonorDataDto;
 import com.example.demo.doctor.dto.DoctorDto;
 import com.example.demo.doctor.dto.EditDoctorDto;
 import com.example.demo.doctor.dto.SendDoctorDataDto;
@@ -98,5 +99,11 @@ public class DoctorController {
     public ResponseEntity<?> getDepartments(@PathVariable("doctorId") Long id) throws IOException {
         byte[] image = service.getImage(id);
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(image);
+    }
+
+    @GetMapping(path = "dept/{deptId}")
+    public SendDoctorDataDto getDoctorsByDept(@PathVariable("deptId") Long id) {
+        SendDoctorDataDto doctors = new SendDoctorDataDto(service.getDoctorsbyDept(id));
+        return doctors;
     }
 }

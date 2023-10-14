@@ -43,4 +43,10 @@ public class BloodDonorController {
     public void updateBloodDonor(@PathVariable("donorId") Long id, @RequestBody AddDonorDto donor) {
         service.updateBloodDonor(id, donor);
     }
+
+    @GetMapping(path = "bloodGroup/{groupId}")
+    public SendDonorDataDto getDonorsByBloodGroup(@PathVariable("groupId") Long id) {
+        SendDonorDataDto donors = new SendDonorDataDto(service.getBloodDonorsNyBloodGroup(id));
+        return donors;
+    }
 }

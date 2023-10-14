@@ -1,5 +1,6 @@
 package com.example.demo.doctor.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     // Optional<Doctor> findDOctorByEmail(String Email);
     Optional<Doctor> findByName(String fileName);
 
+    List<Doctor> findByDeptId(Long id);
 }

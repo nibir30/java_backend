@@ -27,6 +27,10 @@ public class BloodDonorService {
         return repository.findAll();
     }
 
+    public List<BloodDonor> getBloodDonorsNyBloodGroup(Long id) {
+        return repository.findByBloodGroupId(id);
+    }
+
     public Map<String, Object> addNewBloodDonor(AddDonorDto bloodDonor) {
         Map<String, Object> result = new HashMap<String, Object>();
 
