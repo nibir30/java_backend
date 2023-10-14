@@ -1,6 +1,8 @@
 package com.example.demo.doctor.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -21,9 +23,21 @@ public class DegreeService {
         return degreeRepository.findAll();
     }
 
-    public void addNewSymptom(Degree degree) {
-        degreeRepository.save(degree);
+    public Map<String, Object> addNewDegree(Degree degree) {
+        Degree savedDegree = degreeRepository.save(degree);
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (savedDegree != null) {
+            result.put("id", savedDegree.getId());
+            result.put("message", "Degree added successfully");
+            result.put("isSuccess", true);
+            return result;
+        }
+        result.put("message", "Unsuccessful");
+        result.put("isSuccess", false);
         System.out.println(degree);
+
+        return result;
+
     }
 
     public void deleteSymptom(Long id) {

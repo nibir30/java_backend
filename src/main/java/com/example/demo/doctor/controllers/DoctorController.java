@@ -1,7 +1,6 @@
 package com.example.demo.doctor.controllers;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.doctor.dto.DoctorDto;
 import com.example.demo.doctor.dto.EditDoctorDto;
-import com.example.demo.doctor.entity.Doctor;
+import com.example.demo.doctor.dto.SendDoctorDataDto;
 import com.example.demo.doctor.entity.DoctorImage;
 import com.example.demo.doctor.services.DoctorService;
 import com.example.demo.helpers.DebugHelper;
@@ -34,8 +33,9 @@ public class DoctorController {
     }
 
     @GetMapping
-    public List<Doctor> getDoctors() {
-        return service.getDoctors();
+    public SendDoctorDataDto getDoctors() {
+        SendDoctorDataDto department = new SendDoctorDataDto(service.getDoctors());
+        return department;
     }
 
     @PostMapping()

@@ -1,6 +1,6 @@
 package com.example.demo.doctor.controllers;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.doctor.dto.SendDegreeDataDto;
 import com.example.demo.doctor.entity.Degree;
 import com.example.demo.doctor.services.DegreeService;
 
@@ -24,13 +25,16 @@ public class DegreeController {
     }
 
     @GetMapping
-    public List<Degree> getDegree() {
-        return service.getDegree();
+    public SendDegreeDataDto getDegree() {
+        SendDegreeDataDto department = new SendDegreeDataDto(service.getDegree());
+        return department;
     }
 
     @PostMapping
-    public void addNewSymptom(@RequestBody Degree degree) {
-        service.addNewSymptom(degree);
+    public Map<String, Object> addNewDegree(@RequestBody Degree degree) {
+        Map<String, Object> result = service.addNewDegree(degree);
+        return result;
+
     }
 
     @DeleteMapping(path = "{degreeId}")

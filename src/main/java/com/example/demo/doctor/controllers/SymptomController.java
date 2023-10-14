@@ -1,7 +1,6 @@
 package com.example.demo.doctor.controllers;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.doctor.dto.SendSympDataDto;
 import com.example.demo.doctor.entity.Symptom;
 import com.example.demo.doctor.entity.SymptomImage;
 import com.example.demo.doctor.services.SymptomService;
@@ -32,8 +32,9 @@ public class SymptomController {
     }
 
     @GetMapping
-    public List<Symptom> getSymptoms() {
-        return service.getSymptoms();
+    public SendSympDataDto getSymptoms() {
+        SendSympDataDto department = new SendSympDataDto(service.getSymptoms());
+        return department;
     }
 
     @PostMapping("/addImage")
