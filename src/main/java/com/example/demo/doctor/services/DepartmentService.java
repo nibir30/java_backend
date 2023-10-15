@@ -90,7 +90,8 @@ public class DepartmentService {
         }
     }
 
-    private final String FOLDER_PATH = AppConstant.folder_path + "/departments/";
+    // private final String FOLDER_PATH = AppConstant.folder_path + "/departments/";
+    private final String FOLDER_PATH = "src/main/resources/static/images" + "/departments/";
 
     public DepartmentImage uploadImageToFileSystem(MultipartFile file) throws IOException {
 
