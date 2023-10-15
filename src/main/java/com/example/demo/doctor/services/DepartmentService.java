@@ -104,10 +104,8 @@ public class DepartmentService {
         DebugHelper.printData(savedFile.toString());
         String name = "";
         if (file.getOriginalFilename().endsWith(".png") || file.getOriginalFilename().endsWith(".jpg")) {
-            DebugHelper.printData("Paisiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
             name = "DEPARTMENT" + savedFile.getId().toString() + "_" + file.getOriginalFilename();
         } else {
-            DebugHelper.printData("NAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             name = "DEPARTMENT" + savedFile.getId().toString() + "_" + file.getOriginalFilename() + ".png";
         }
         String filePath = FOLDER_PATH + name;

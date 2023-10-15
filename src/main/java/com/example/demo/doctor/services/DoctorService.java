@@ -66,13 +66,19 @@ public class DoctorService {
         DoctorImage savedFile = imageRepository.save(data);
 
         DebugHelper.printData(savedFile.toString());
-        String filePath = FOLDER_PATH + "DOCTOR" + savedFile.getId().toString() + file.getOriginalFilename();
+        String name = "";
+        if (file.getOriginalFilename().endsWith(".png") || file.getOriginalFilename().endsWith(".jpg")) {
+            name = "DOCTOR" + savedFile.getId().toString() + "_" + file.getOriginalFilename();
+        } else {
+            name = "DOCTOR" + savedFile.getId().toString() + "_" + file.getOriginalFilename() + ".png";
+        }
+        String filePath = FOLDER_PATH + name;
 
         DebugHelper.printData(filePath);
 
         file.transferTo(new File(filePath));
         savedFile.setFilePath(filePath);
-        savedFile.setName("DOCTOR" + savedFile.getId().toString() + file.getOriginalFilename());
+        savedFile.setName(name);
 
         DoctorImage final_data = imageRepository.save(savedFile);
         DebugHelper.printData(final_data.toString());
@@ -238,28 +244,6 @@ public class DoctorService {
     // private final String FOLDER_PATH =
     // "D:/dev/backend/java/java_backend/src/images/doctors/";
     private final String FOLDER_PATH = AppConstant.folder_path + "/doctors/";
-
-    public String uploadImageToFileSystem(Long id, MultipartFile file) throws IOException {
-        String filePath = FOLDER_PATH + "DOCTOR" + id + "_" + file.getOriginalFilename();
-
-        Doctor newDoctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));
-        // Doctor fileData = doctorRepository.save(Doctor.builder()
-        // // .name(file.getOriginalFilename())
-        // // .type(file.getContentType())
-        // .imageFilePath(filePath).build());
-        // System.out.println(newDoctor);
-        newDoctor.setImage_file_path(filePath);
-        System.out.println(newDoctor);
-        System.out.println(filePath);
-
-        file.transferTo(new File(filePath));
-
-        // if (fileData != null) {
-        return "Successful";
-        // }
-        // return "Error saving file";
-    }
 
     public byte[] getImage(Long id) throws IOException {
 

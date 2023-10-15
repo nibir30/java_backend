@@ -102,7 +102,13 @@ public class SymptomService {
         SymptomImage savedFile = imageRepository.save(data);
 
         DebugHelper.printData(savedFile.toString());
-        String filePath = FOLDER_PATH + "SYMPTOM" + savedFile.getId().toString() + "_" + file.getOriginalFilename();
+        String name = "";
+        if (file.getOriginalFilename().endsWith(".png") || file.getOriginalFilename().endsWith(".jpg")) {
+            name = "SYMPTOM" + savedFile.getId().toString() + "_" + file.getOriginalFilename();
+        } else {
+            name = "SYMPTOM" + savedFile.getId().toString() + "_" + file.getOriginalFilename() + ".png";
+        }
+        String filePath = FOLDER_PATH + name;
 
         DebugHelper.printData(filePath);
 
@@ -110,7 +116,7 @@ public class SymptomService {
             file.transferTo(new File(filePath));
         }
         savedFile.setFilePath(filePath);
-        savedFile.setName("SYMPTOM" + savedFile.getId().toString() + "_" + file.getOriginalFilename());
+        savedFile.setName(name);
 
         SymptomImage final_data = imageRepository.save(savedFile);
         DebugHelper.printData(final_data.toString());
