@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.blood_donor.dtos.SendDonorDataDto;
 import com.example.demo.doctor.dto.DoctorDto;
 import com.example.demo.doctor.dto.EditDoctorDto;
 import com.example.demo.doctor.dto.SendDoctorDataDto;
