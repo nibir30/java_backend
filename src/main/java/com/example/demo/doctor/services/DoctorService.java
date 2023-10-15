@@ -240,7 +240,7 @@ public class DoctorService {
     private final String FOLDER_PATH = AppConstant.folder_path + "/doctors/";
 
     public String uploadImageToFileSystem(Long id, MultipartFile file) throws IOException {
-        String filePath = FOLDER_PATH + "DOCTOR" + id + file.getOriginalFilename();
+        String filePath = FOLDER_PATH + "DOCTOR" + id + "_" + file.getOriginalFilename();
 
         Doctor newDoctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Doctor does not exit"));

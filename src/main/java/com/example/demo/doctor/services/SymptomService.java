@@ -102,7 +102,7 @@ public class SymptomService {
         SymptomImage savedFile = imageRepository.save(data);
 
         DebugHelper.printData(savedFile.toString());
-        String filePath = FOLDER_PATH + "SYMPTOM" + savedFile.getId().toString() + file.getOriginalFilename();
+        String filePath = FOLDER_PATH + "SYMPTOM" + savedFile.getId().toString() + "_" + file.getOriginalFilename();
 
         DebugHelper.printData(filePath);
 
@@ -110,7 +110,7 @@ public class SymptomService {
             file.transferTo(new File(filePath));
         }
         savedFile.setFilePath(filePath);
-        savedFile.setName("SYMPTOM" + savedFile.getId().toString() + file.getOriginalFilename());
+        savedFile.setName("SYMPTOM" + savedFile.getId().toString() + "_" + file.getOriginalFilename());
 
         SymptomImage final_data = imageRepository.save(savedFile);
         DebugHelper.printData(final_data.toString());
