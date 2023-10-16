@@ -38,6 +38,13 @@ public class DoctorController {
         return department;
     }
 
+    // @GetMapping
+    // public ResponseEntity<Object> getDoctors() {
+
+    // SendDoctorDataDto department = new SendDoctorDataDto(service.getDoctors());
+    // return ResponseEntity.accepted().body(new SendMyResponse(department));
+    // }
+
     @PostMapping()
     public Map<String, Object> addNewDoctor(@RequestBody DoctorDto doctorDto)
             throws NumberFormatException, IOException {
