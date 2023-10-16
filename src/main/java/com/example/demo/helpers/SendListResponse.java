@@ -12,5 +12,6 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 public class SendListResponse {
+
     private List<Object> listResponse;
 }

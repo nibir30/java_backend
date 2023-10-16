@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ResponseHandler {
-    public static ResponseEntity<Map<String, Object>> generateResponse(HttpStatus status, boolean error, String message,
+    public static ResponseEntity generateResponse(HttpStatus status, boolean error, String message,
             Object responseObj) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
