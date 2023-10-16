@@ -1,4 +1,4 @@
-package com.example.demo.doctor.dto;
+package com.example.demo.helpers;
 
 import java.util.Date;
 import java.util.HashMap;

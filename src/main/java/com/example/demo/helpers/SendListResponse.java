@@ -1,4 +1,6 @@
-package com.example.demo.doctor.dto;
+package com.example.demo.helpers;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SendMyResponse {
-    private Object data;
+public class SendListResponse {
+    private List<Object> listResponse;
 }
