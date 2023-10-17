@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class LawyerDto {
+public class AddLawyerDto {
 
     @NotBlank(message = "Lawyer name should not be empty")
     private String name;

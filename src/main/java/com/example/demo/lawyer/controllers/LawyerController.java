@@ -3,6 +3,8 @@ package com.example.demo.lawyer.controllers;
 import java.io.IOException;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,11 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.lawyer.dto.LawyerDto;
+
+import com.example.demo.lawyer.dto.AddLawyerDto;
 import com.example.demo.lawyer.dto.AllLawyerDto;
 import com.example.demo.lawyer.dto.EditLawyerDto;
+import com.example.demo.lawyer.entity.Lawyer;
 import com.example.demo.lawyer.services.LawyerService;
-import com.example.demo.helpers.DebugHelper;
+import com.example.demo.helpers.ResponseHandler;
+import com.example.demo.helpers.SuccessMessageModel;
 
 @RestController
 @RequestMapping(path = "api/v1/lawyers")
@@ -26,19 +31,26 @@ public class LawyerController {
     }
 
     @GetMapping
-    public AllLawyerDto getLawyers() {
+    public ResponseEntity<Object> getLawyers() {
         AllLawyerDto lawyerDto = new AllLawyerDto(service.getLawyers());
-        return lawyerDto;
+        return ResponseHandler.generateResponse(HttpStatus.OK, true,
+                "Lawyer viewed successfully", lawyerDto);
     }
 
     @PostMapping()
-    public Map<String, Object> addNewLawyer(@RequestBody LawyerDto lawyerDto)
+    public ResponseEntity<Object> addNewLawyer(@RequestBody AddLawyerDto lawyerDto)
             throws NumberFormatException, IOException {
 
-        Map<String, Object> result = service.addNewLawyer(lawyerDto);
+        boolean isOkay = service.addNewLawyer(lawyerDto);
 
-        // return ResponseEntity.ok(result);
-        return result;
+        if (isOkay) {
+            return ResponseHandler.generateResponse(HttpStatus.CREATED, true,
+                    "Lawyer created successfully",
+                    new SuccessMessageModel("Lawyer created successfully", true));
+        }
+        return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false,
+                "Practice Court already exists",
+                new SuccessMessageModel("Practice Court already exists", false));
 
     }
 
@@ -47,16 +59,17 @@ public class LawyerController {
         service.deleteLawyer(id);
     }
 
-    @PostMapping(path = "/update")
+    @PostMapping(path = "/update/{lawyerId}")
     // @PostMapping(path = "/{lawyerId}")
 
-    public void updateLawyer(
-            // @PathVariable("lawyerId") Long id,
+    public ResponseEntity<Object> updateLawyer(
+            @PathVariable("lawyerId") Long id,
             @RequestBody EditLawyerDto lawyer) {
-        DebugHelper.printData(lawyer.toString());
-        service.updateLawyer(lawyer);
+        Lawyer lawyer2 = service.updateLawyer(id, lawyer);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true,
+                "Lawyer updated successfully",
+                lawyer2);
         // service.updateLawyer(id, lawyer);
-
     }
 
 }

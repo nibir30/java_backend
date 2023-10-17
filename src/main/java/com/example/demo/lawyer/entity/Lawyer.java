@@ -25,9 +25,11 @@ public class Lawyer {
     @Column(nullable = false)
     private String phone;
 
-    private String address;
-
     @ManyToOne(targetEntity = LawyerPracticeType.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "fk_lawyer_practice", referencedColumnName = "id", nullable = false)
     private LawyerPracticeType practiceType;
+
+    @ManyToOne(targetEntity = LawyerCourt.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_lawyer_court", referencedColumnName = "id", nullable = false)
+    private LawyerCourt court;
 }
