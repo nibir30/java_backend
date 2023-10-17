@@ -17,6 +17,8 @@ import com.example.demo.lawyer.dto.EditPracticeTypeDto;
 import com.example.demo.lawyer.dto.SendPracticeTypeDataDto;
 import com.example.demo.lawyer.services.LawyerPracticeTypeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(path = "api/v1/lawyers/practiceTypes")
 public class LawyerPracticeTypeController {
@@ -35,7 +37,7 @@ public class LawyerPracticeTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addNewLawyerPracticeType(@RequestBody AddPracticeTypeDto practiceType) {
+    public ResponseEntity<Object> addNewLawyerPracticeType(@RequestBody @Valid AddPracticeTypeDto practiceType) {
         if (service.addNewPracticeType(practiceType)) {
             return ResponseHandler.generateResponse(HttpStatus.CREATED, true,
                     "Practice Type added successfully",

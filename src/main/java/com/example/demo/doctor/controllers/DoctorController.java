@@ -74,7 +74,6 @@ public class DoctorController {
     @PostMapping("/updateImage")
     public DoctorImage updateDoctorImage(
             @RequestParam("image") MultipartFile file, @RequestParam("id") String id)
-
             throws NumberFormatException, IOException {
         DoctorImage image = service.updateImageFromFileSystem(file, id);
         if (image != null) {

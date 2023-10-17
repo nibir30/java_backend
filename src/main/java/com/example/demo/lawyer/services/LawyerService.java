@@ -36,15 +36,6 @@ public class LawyerService {
         Map<String, Object> result = new HashMap<String, Object>();
         if (isPracticeTypeOk && isSymptomOk && isDegreeOk) {
             Lawyer lawyer = new Lawyer();
-            if (lawyerRepository.existsById(lawyerDto.getId())) {
-                result.put("id", lawyerDto.getId());
-                result.put("message", "Lawyer already exists");
-                result.put("isSuccess", false);
-
-                return result;
-            }
-
-            lawyer.setId(lawyerDto.getId());
             BeanUtils.copyProperties(lawyerDto, lawyer);
 
             lawyer.setPracticeType(departmentRepository.findById(lawyerDto.getPracticeTypeId())
