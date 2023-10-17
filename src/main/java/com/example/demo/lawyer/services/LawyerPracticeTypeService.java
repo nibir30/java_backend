@@ -1,9 +1,12 @@
 package com.example.demo.lawyer.services;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+
+import com.example.demo.lawyer.dto.AddPracticeTypeDto;
+import com.example.demo.lawyer.dto.EditPracticeTypeDto;
 import com.example.demo.lawyer.entity.LawyerPracticeType;
 import com.example.demo.lawyer.repositories.LawyerPracticeTypeRepository;
 import jakarta.transaction.Transactional;
@@ -18,25 +21,18 @@ public class LawyerPracticeTypeService {
         return practiceTypeRepository.findAll();
     }
 
-    public Map<String, Object> addNewPracticeType(LawyerPracticeType practiceType) {
-        Map<String, Object> result = new HashMap<String, Object>();
+    public boolean addNewPracticeType(AddPracticeTypeDto practiceTypeDto) {
+        Optional<LawyerPracticeType> existingType = practiceTypeRepository.findByName(practiceTypeDto.getName());
 
-        if (practiceTypeRepository.existsById(practiceType.getId())) {
-            result.put("id", practiceType.getId());
-            result.put("message", "LawyerPracticeType already exists");
-            result.put("isSuccess", false);
-
-            return result;
+        if (existingType.isPresent()) {
+            return false;
         }
+        LawyerPracticeType newType = new LawyerPracticeType();
+        newType.setName(practiceTypeDto.getName());
+        newType.setBangla_name(practiceTypeDto.getBangla_name());
 
-        practiceTypeRepository.save(practiceType);
-        result.put("id", practiceType.getId());
-        result.put("message", "LawyerPracticeType added successfully");
-        result.put("isSuccess", true);
-
-        System.out.println(practiceType);
-
-        return result;
+        practiceTypeRepository.save(newType);
+        return true;
 
     }
 
@@ -63,7 +59,7 @@ public class LawyerPracticeTypeService {
     }
 
     @Transactional
-    public void updatePracticeType(Long id, LawyerPracticeType practiceType) {
+    public boolean updatePracticeType(Long id, EditPracticeTypeDto practiceType) {
         LawyerPracticeType newPracticeType = practiceTypeRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("PracticeType does not exit"));
 
@@ -75,6 +71,8 @@ public class LawyerPracticeTypeService {
         if (practiceType.getBangla_name() != null && practiceType.getBangla_name().length() > 0) {
             newPracticeType.setBangla_name(practiceType.getBangla_name());
         }
+
+        return true;
     }
 
 }
