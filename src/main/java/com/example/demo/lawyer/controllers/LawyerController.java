@@ -1,7 +1,6 @@
 package com.example.demo.lawyer.controllers;
 
 import java.io.IOException;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
