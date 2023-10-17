@@ -17,7 +17,6 @@ import com.example.demo.lawyer.dto.AllLawyerDto;
 import com.example.demo.lawyer.dto.EditLawyerDto;
 import com.example.demo.lawyer.entity.Lawyer;
 import com.example.demo.lawyer.services.LawyerService;
-import com.example.demo.doctor.dto.SendDoctorDataDto;
 import com.example.demo.helpers.ResponseHandler;
 import com.example.demo.helpers.SuccessMessageModel;
 
