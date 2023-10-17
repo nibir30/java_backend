@@ -46,19 +46,6 @@ public class LawyerCourtService {
     }
 
     @Transactional
-    public void updateCourt(Long id, String name, String bangla_name) {
-        LawyerCourt court = courtRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Court does not exit"));
-
-        if (name != null && name.length() > 0) {
-            court.setName(name);
-        }
-        if (bangla_name != null && bangla_name.length() > 0) {
-            court.setBangla_name(bangla_name);
-        }
-    }
-
-    @Transactional
     public boolean updateCourt(Long id, EditCourtDto court) {
         LawyerCourt newCourt = courtRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Court does not exit"));

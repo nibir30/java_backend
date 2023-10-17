@@ -46,19 +46,6 @@ public class LawyerPracticeTypeService {
     }
 
     @Transactional
-    public void updatePracticeType(Long id, String name, String bangla_name) {
-        LawyerPracticeType practiceType = practiceTypeRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("PracticeType does not exit"));
-
-        if (name != null && name.length() > 0) {
-            practiceType.setName(name);
-        }
-        if (bangla_name != null && bangla_name.length() > 0) {
-            practiceType.setBangla_name(bangla_name);
-        }
-    }
-
-    @Transactional
     public boolean updatePracticeType(Long id, EditPracticeTypeDto practiceType) {
         LawyerPracticeType newPracticeType = practiceTypeRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("PracticeType does not exit"));
