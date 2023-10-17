@@ -17,6 +17,7 @@ import com.example.demo.lawyer.dto.AllLawyerDto;
 import com.example.demo.lawyer.dto.EditLawyerDto;
 import com.example.demo.lawyer.entity.Lawyer;
 import com.example.demo.lawyer.services.LawyerService;
+import com.example.demo.doctor.dto.SendDoctorDataDto;
 import com.example.demo.helpers.ResponseHandler;
 import com.example.demo.helpers.SuccessMessageModel;
 
@@ -59,16 +60,20 @@ public class LawyerController {
     }
 
     @PostMapping(path = "/update/{lawyerId}")
-    // @PostMapping(path = "/{lawyerId}")
-
-    public ResponseEntity<Object> updateLawyer(
-            @PathVariable("lawyerId") Long id,
+    public ResponseEntity<Object> updateLawyer(@PathVariable("lawyerId") Long id,
             @RequestBody EditLawyerDto lawyer) {
         Lawyer lawyer2 = service.updateLawyer(id, lawyer);
         return ResponseHandler.generateResponse(HttpStatus.OK, true,
                 "Lawyer updated successfully",
                 lawyer2);
         // service.updateLawyer(id, lawyer);
+    }
+
+    @GetMapping(path = "/type/{typeId}")
+    public ResponseEntity<Object> getLawyerstype(@PathVariable("typeId") Long id) {
+        AllLawyerDto lawyers = new AllLawyerDto(service.getLawyersbyType(id));
+        return ResponseHandler.generateResponse(HttpStatus.OK, true,
+                "Lawyers viewed successfully", lawyers);
     }
 
 }

@@ -82,4 +82,7 @@ public class LawyerService {
 
     }
 
+    public List<Lawyer> getLawyersbyType(Long id) {
+        return lawyerRepository.findByPracticeTypeId(id);
+    }
 }
