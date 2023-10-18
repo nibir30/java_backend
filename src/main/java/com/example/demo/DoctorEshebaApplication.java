@@ -10,5 +10,4 @@ public class DoctorEshebaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DoctorEshebaApplication.class, args);
 	}
-
 }

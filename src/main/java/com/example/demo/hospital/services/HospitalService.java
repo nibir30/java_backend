@@ -191,7 +191,7 @@ public class HospitalService {
     private final String FOLDER_PATH = AppConstant.folder_path + "/hospitals/";
 
     public String uploadImageToFileSystem(Long id, MultipartFile file) throws IOException {
-        String filePath = FOLDER_PATH + "HOSPITAL" + id + file.getOriginalFilename();
+        String filePath = FOLDER_PATH + "HOSPITAL" + id + "_" + file.getOriginalFilename();
 
         Hospital newHospital = hospitalRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Hospital does not exit"));

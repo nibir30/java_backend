@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.blood_donor.dtos.SendDonorDataDto;
 import com.example.demo.doctor.dto.DoctorDto;
 import com.example.demo.doctor.dto.EditDoctorDto;
 import com.example.demo.doctor.dto.SendDoctorDataDto;
@@ -38,6 +37,13 @@ public class DoctorController {
         SendDoctorDataDto department = new SendDoctorDataDto(service.getDoctors());
         return department;
     }
+
+    // @GetMapping
+    // public ResponseEntity<Object> getDoctors() {
+    // List<Doctor> department = service.getDoctors();
+    // return ResponseHandler.generateResponse(HttpStatus.OK, true,
+    // "Successful", department);
+    // }
 
     @PostMapping()
     public Map<String, Object> addNewDoctor(@RequestBody DoctorDto doctorDto)
@@ -68,7 +74,6 @@ public class DoctorController {
     @PostMapping("/updateImage")
     public DoctorImage updateDoctorImage(
             @RequestParam("image") MultipartFile file, @RequestParam("id") String id)
-
             throws NumberFormatException, IOException {
         DoctorImage image = service.updateImageFromFileSystem(file, id);
         if (image != null) {
