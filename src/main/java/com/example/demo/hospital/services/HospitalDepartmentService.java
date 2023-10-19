@@ -37,7 +37,7 @@ public class HospitalDepartmentService {
         if (deptRepository.existsById(dept.getId())) {
             result.put("id", dept.getId());
             result.put("message", "HospitalDepartment already exists");
-            result.put("isSuccess", false);
+            result.put("success", false);
 
             return result;
         }
@@ -45,7 +45,7 @@ public class HospitalDepartmentService {
         deptRepository.save(dept);
         result.put("id", dept.getId());
         result.put("message", "HospitalDepartment added successfully");
-        result.put("isSuccess", true);
+        result.put("success", true);
 
         System.out.println(dept);
 

@@ -36,14 +36,14 @@ public class SymptomService {
         if (symptomRepository.existsById(symptom.getId())) {
             result.put("id", symptom.getId());
             result.put("message", "Symptom already exists");
-            result.put("isSuccess", false);
+            result.put("success", false);
 
             return result;
         }
         symptomRepository.save(symptom);
         result.put("id", symptom.getId());
         result.put("message", "Symptom added successfully");
-        result.put("isSuccess", true);
+        result.put("success", true);
 
         System.out.println(symptom);
 

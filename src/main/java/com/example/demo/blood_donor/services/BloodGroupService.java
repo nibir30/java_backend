@@ -29,7 +29,7 @@ public class BloodGroupService {
         if (existingBloodGroup.isPresent()) {
             result.put("id", bloodGroup.getId());
             result.put("message", "BloodGroup already exists");
-            result.put("isSuccess", false);
+            result.put("success", false);
 
             return result;
         }
@@ -37,7 +37,7 @@ public class BloodGroupService {
         repository.save(bloodGroup);
         result.put("id", bloodGroup.getId());
         result.put("message", "BloodGroup added successfully");
-        result.put("isSuccess", true);
+        result.put("success", true);
 
         System.out.println(bloodGroup);
 

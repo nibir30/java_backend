@@ -39,11 +39,11 @@ public class BloodDonorService {
             repository.save(donor);
             result.put("id", donor.getId());
             result.put("message", "BloodDonor added successfully");
-            result.put("isSuccess", true);
+            result.put("success", true);
         } else {
             result.put("name", bloodDonor.getName());
             result.put("message", "Something went wrong");
-            result.put("isSuccess", false);
+            result.put("success", false);
         }
 
         System.out.println(donor);

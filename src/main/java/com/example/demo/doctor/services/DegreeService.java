@@ -29,11 +29,11 @@ public class DegreeService {
         if (savedDegree != null) {
             result.put("id", savedDegree.getId());
             result.put("message", "Degree added successfully");
-            result.put("isSuccess", true);
+            result.put("success", true);
             return result;
         }
         result.put("message", "Unsuccessful");
-        result.put("isSuccess", false);
+        result.put("success", false);
         System.out.println(degree);
 
         return result;

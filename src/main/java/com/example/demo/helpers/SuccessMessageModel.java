@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 public class SuccessMessageModel {
     private String message;
-    private boolean isSuccess;
+    private boolean success;
 
 }

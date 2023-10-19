@@ -91,7 +91,7 @@ public class HospitalService {
             if (hospitalRepository.existsById(hospitalDto.getId())) {
                 result.put("id", hospitalDto.getId());
                 result.put("message", "Hospital already exists");
-                result.put("isSuccess", false);
+                result.put("success", false);
 
                 return result;
             }
@@ -106,7 +106,7 @@ public class HospitalService {
             DebugHelper.printData(savedHospital.toString());
             result.put("id", savedHospital.getId());
             result.put("message", "Hospital added successfully");
-            result.put("isSuccess", true);
+            result.put("success", true);
 
             return result;
 
@@ -114,28 +114,28 @@ public class HospitalService {
             if (!isDeptOk) {
                 result.put("id", null);
                 result.put("message", "HospitalDepartment does not exist");
-                result.put("isSuccess", false);
+                result.put("success", false);
 
                 return result;
             }
             if (!isSymptomOk) {
                 result.put("id", null);
                 result.put("message", "Symptom does not exist");
-                result.put("isSuccess", false);
+                result.put("success", false);
 
                 return result;
             }
             if (!isDegreeOk) {
                 result.put("id", null);
                 result.put("message", "Degree does not exist");
-                result.put("isSuccess", false);
+                result.put("success", false);
 
                 return result;
             }
         }
         result.put("id", null);
         result.put("message", "Error");
-        result.put("isSuccess", false);
+        result.put("success", false);
 
         return result;
     }
