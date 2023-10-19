@@ -14,6 +14,6 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 public class SendBloodBankDataDto {
-    private List<BloodBank> bloodBanks;
+    private List<BloodBank> listResponse;
 
 }

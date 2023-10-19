@@ -14,6 +14,6 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 public class SendAmbulanceDataDto {
-    private List<Ambulance> ambulances;
+    private List<Ambulance> listResponse;
 
 }

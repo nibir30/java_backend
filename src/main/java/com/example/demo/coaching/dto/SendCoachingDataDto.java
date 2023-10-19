@@ -14,6 +14,6 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 public class SendCoachingDataDto {
-    private List<Coaching> coachings;
+    private List<Coaching> listResponse;
 
 }
