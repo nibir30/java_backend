@@ -14,6 +14,6 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 public class SendPracticeTypeDataDto {
-    private List<LawyerPracticeType> practiceTypes;
+    private List<LawyerPracticeType> listResponse;
 
 }
