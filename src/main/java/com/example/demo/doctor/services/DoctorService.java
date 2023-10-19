@@ -36,6 +36,10 @@ public class DoctorService {
         return doctorRepository.findByDeptId(id);
     }
 
+    public List<Doctor> getDoctorsbySymptom(Long id) {
+        return doctorRepository.findBySymptomId(id);
+    }
+
     public DoctorImage updateImageFromFileSystem(MultipartFile file, String id) throws IOException {
 
         Optional<DoctorImage> savedFile = imageRepository.findById(Long.parseLong(id));

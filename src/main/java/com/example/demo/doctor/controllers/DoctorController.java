@@ -111,4 +111,10 @@ public class DoctorController {
         SendDoctorDataDto doctors = new SendDoctorDataDto(service.getDoctorsbyDept(id));
         return doctors;
     }
+
+    @GetMapping(path = "symptom/{sympId}")
+    public SendDoctorDataDto getDoctorsBySymptom(@PathVariable("sympId") Long id) {
+        SendDoctorDataDto doctors = new SendDoctorDataDto(service.getDoctorsbySymptom(id));
+        return doctors;
+    }
 }
