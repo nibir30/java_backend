@@ -8,6 +8,8 @@ import lombok.ToString;
 @Data
 @ToString
 public class AddRentCarDto {
+    @NotNull(message = "Id should not be null")
+    private Long id;
     @NotNull(message = "name should not be null")
     private String name;
     @NotBlank(message = "bangla_name should not be null")
