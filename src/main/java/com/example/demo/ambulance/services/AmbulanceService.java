@@ -1,15 +1,23 @@
 package com.example.demo.ambulance.services;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.ambulance.dto.AddAmbulanceDto;
 import com.example.demo.ambulance.dto.EditAmbulanceDto;
 import com.example.demo.ambulance.entity.Ambulance;
 import com.example.demo.ambulance.repositories.AmbulanceRepository;
+import com.example.demo.ambulance.repositories.ImageAmbulanceRepository;
+import com.example.demo.ambulance.entity.AmbulanceImage;
+import com.example.demo.helpers.AppConstant;
+import com.example.demo.helpers.DebugHelper;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -18,6 +26,7 @@ import lombok.AllArgsConstructor;
 @Service
 public class AmbulanceService {
     private final AmbulanceRepository ambulanceRepository;
+    private final ImageAmbulanceRepository imageRepository;
 
     public List<Ambulance> getAmbulances() {
         return ambulanceRepository.findAll();
@@ -68,6 +77,56 @@ public class AmbulanceService {
             newAmbulance.setContact(ambulance.getContact());
         }
         return newAmbulance;
+    }
+
+    private final String FOLDER_PATH = AppConstant.folder_path + "/ambulances/";
+
+    public byte[] getImage(Long id) throws IOException {
+
+        Optional<AmbulanceImage> savedFile = imageRepository.findById(id);
+
+        if (savedFile != null) {
+            DebugHelper.printData(savedFile.toString());
+            String filePath = savedFile.get().getFilePath();
+
+            DebugHelper.printData(filePath);
+            byte[] image = Files.readAllBytes(new File(filePath).toPath());
+            return image;
+        } else {
+            return null;
+        }
+    }
+
+    public AmbulanceImage uploadImageToFileSystem(MultipartFile file) throws IOException {
+
+        AmbulanceImage data = AmbulanceImage.builder()
+                .name("Ambulance" + file.getOriginalFilename())
+                .type(file.getContentType())
+                .category("ambulances")
+                .build();
+        AmbulanceImage savedFile = imageRepository.save(data);
+
+        DebugHelper.printData(savedFile.toString());
+        String name = "";
+        if (file.getOriginalFilename().endsWith(".png") || file.getOriginalFilename().endsWith(".jpg")
+                || file.getOriginalFilename().endsWith(".jpeg") || file.getOriginalFilename().endsWith(".JPEG")) {
+            name = "Ambulance" + savedFile.getId().toString() + "_" + file.getOriginalFilename();
+        } else {
+            name = "Ambulance" + savedFile.getId().toString() + "_" + file.getOriginalFilename() + ".png";
+        }
+        String filePath = FOLDER_PATH + name;
+
+        DebugHelper.printData(filePath);
+
+        file.transferTo(new File(filePath));
+        savedFile.setFilePath(filePath);
+        savedFile.setName(name);
+
+        AmbulanceImage final_data = imageRepository.save(savedFile);
+        DebugHelper.printData(final_data.toString());
+
+        return final_data;
+
     }
 
 }

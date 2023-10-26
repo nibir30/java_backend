@@ -1,8 +1,10 @@
 package com.example.demo.ambulance.controllers;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.helpers.ResponseHandler;
 import com.example.demo.helpers.SuccessMessageModel;
@@ -19,6 +23,7 @@ import com.example.demo.ambulance.dto.EditAmbulanceDto;
 import com.example.demo.ambulance.dto.SendAmbulanceDataDto;
 import com.example.demo.ambulance.entity.Ambulance;
 import com.example.demo.ambulance.services.AmbulanceService;
+import com.example.demo.ambulance.entity.AmbulanceImage;
 
 import jakarta.validation.Valid;
 
@@ -51,6 +56,16 @@ public class AmbulanceController {
                 new SuccessMessageModel("Ambulance exists already", false));
     }
 
+    @PostMapping("/addImage")
+    public AmbulanceImage addAmbulanceImage(@RequestParam("image") MultipartFile file)
+            throws NumberFormatException, IOException {
+        AmbulanceImage image = service.uploadImageToFileSystem(file);
+        if (image != null) {
+            return image;
+        }
+        return null;
+    }
+
     @DeleteMapping(path = "{ambulanceId}")
     public void deleteAmbulance(@PathVariable("ambulanceId") Long id) {
         service.deleteAmbulance(id);
@@ -68,6 +83,12 @@ public class AmbulanceController {
         return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false,
                 "Ambulance already exists",
                 null);
+    }
+
+    @GetMapping("/getImage/{ambulanceId}")
+    public ResponseEntity<?> getDepartments(@PathVariable("ambulanceId") Long id) throws IOException {
+        byte[] image = service.getImage(id);
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(image);
     }
 
 }
