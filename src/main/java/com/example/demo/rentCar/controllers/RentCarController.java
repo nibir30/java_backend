@@ -51,7 +51,7 @@ public class RentCarController {
                     "RentCar added successfully",
                     new SuccessMessageModel("Successfully added an RentCar", true));
         }
-        return ResponseHandler.generateResponse(HttpStatus.CONFLICT, false,
+        return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false,
                 "RentCar exists already",
                 new SuccessMessageModel("RentCar exists already", false));
     }

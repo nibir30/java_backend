@@ -46,7 +46,7 @@ public class BloodBankController {
                     "BloodBank added successfully",
                     new SuccessMessageModel("Successfully added an BloodBank", true));
         }
-        return ResponseHandler.generateResponse(HttpStatus.CONFLICT, false,
+        return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false,
                 "BloodBank exists already",
                 new SuccessMessageModel("BloodBank exists already", false));
     }

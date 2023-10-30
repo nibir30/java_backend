@@ -43,7 +43,7 @@ public class LawyerPracticeTypeController {
                     "Practice Type added successfully",
                     new SuccessMessageModel("Successfully added a Practice Type", true));
         }
-        return ResponseHandler.generateResponse(HttpStatus.CONFLICT, false,
+        return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false,
                 "Practice Type exists already",
                 new SuccessMessageModel("Practice Type exists already", false));
     }

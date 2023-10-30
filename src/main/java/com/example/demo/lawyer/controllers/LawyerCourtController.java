@@ -43,7 +43,7 @@ public class LawyerCourtController {
                     "Practice Court added successfully",
                     new SuccessMessageModel("Successfully added a Practice Court", true));
         }
-        return ResponseHandler.generateResponse(HttpStatus.CONFLICT, false,
+        return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false,
                 "Practice Court exists already",
                 new SuccessMessageModel("Practice Court exists already", false));
     }

@@ -38,12 +38,12 @@ public class DegreeController {
     }
 
     @DeleteMapping(path = "{degreeId}")
-    public void deleteSymptom(@PathVariable("degreeId") Long id) {
-        service.deleteSymptom(id);
+    public void deleteDegree(@PathVariable("degreeId") Long id) {
+        service.deleteDegree(id);
     }
 
     @PostMapping(path = "{degreeId}")
-    public void updateSymptom(@PathVariable("degreeId") Long id, @RequestBody Degree degree) {
-        service.updateSymptom(id, degree);
+    public void updateDegree(@PathVariable("degreeId") Long id, @RequestBody Degree degree) {
+        service.updateDegree(id, degree);
     }
 }

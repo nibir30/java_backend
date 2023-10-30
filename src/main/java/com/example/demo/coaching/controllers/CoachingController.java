@@ -46,7 +46,7 @@ public class CoachingController {
                     "Coaching added successfully",
                     new SuccessMessageModel("Successfully added an Coaching", true));
         }
-        return ResponseHandler.generateResponse(HttpStatus.CONFLICT, false,
+        return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false,
                 "Coaching exists already",
                 new SuccessMessageModel("Coaching exists already", false));
     }

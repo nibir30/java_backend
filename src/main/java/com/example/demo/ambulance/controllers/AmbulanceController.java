@@ -51,7 +51,7 @@ public class AmbulanceController {
                     "Ambulance added successfully",
                     new SuccessMessageModel("Successfully added an Ambulance", true));
         }
-        return ResponseHandler.generateResponse(HttpStatus.CONFLICT, false,
+        return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false,
                 "Ambulance exists already",
                 new SuccessMessageModel("Ambulance exists already", false));
     }

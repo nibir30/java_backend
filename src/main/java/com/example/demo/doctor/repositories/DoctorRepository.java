@@ -12,7 +12,7 @@ import com.example.demo.doctor.entity.Doctor;
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     // @Query("SELECT D FROM Doctor d WHERE d.email = ?1")
     // Optional<Doctor> findDOctorByEmail(String Email);
-    Optional<Doctor> findByName(String fileName);
+    Optional<Doctor> findByName(String name);
 
     List<Doctor> findBySymptomId(Long id);
 

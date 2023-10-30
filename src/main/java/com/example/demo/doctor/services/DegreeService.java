@@ -40,19 +40,19 @@ public class DegreeService {
 
     }
 
-    public void deleteSymptom(Long id) {
+    public void deleteDegree(Long id) {
 
         if (degreeRepository.existsById(id)) {
             degreeRepository.deleteById(id);
         } else {
-            throw new IllegalStateException("Symptom does not exit");
+            throw new IllegalStateException("Degree does not exit");
         }
     }
 
     @Transactional
-    public void updateSymptom(Long id, String name, String bangla_name) {
+    public void updateDegree(Long id, String name, String bangla_name) {
         Degree degree = degreeRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Symptom does not exit"));
+                .orElseThrow(() -> new IllegalStateException("Degree does not exit"));
 
         if (name != null && name.length() > 0) {
             degree.setName(name);
@@ -63,17 +63,17 @@ public class DegreeService {
     }
 
     @Transactional
-    public void updateSymptom(Long id, Degree degree) {
-        Degree newSymptom = degreeRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Symptom does not exit"));
+    public void updateDegree(Long id, Degree degree) {
+        Degree newDegree = degreeRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Degree does not exit"));
 
-        System.out.println(newSymptom);
+        System.out.println(newDegree);
 
         if (degree.getName() != null && degree.getName().length() > 0) {
-            newSymptom.setName(degree.getName());
+            newDegree.setName(degree.getName());
         }
         if (degree.getBangla_name() != null && degree.getBangla_name().length() > 0) {
-            newSymptom.setBangla_name(degree.getBangla_name());
+            newDegree.setBangla_name(degree.getBangla_name());
         }
     }
 }
