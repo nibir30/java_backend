@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.bus.dtos.AddBusDto;
 import com.example.demo.bus.dtos.EditBusDto;
+import com.example.demo.bus.dtos.GetAllBusDto;
 import com.example.demo.bus.dtos.SendBusDataDto;
 import com.example.demo.bus.services.BusService;
 import com.example.demo.helpers.ResponseHandler;
@@ -66,4 +67,13 @@ public class BusController {
                 new SuccessMessageModel("Bus already exists", false));
     }
 
+    @PostMapping(path = "/type")
+    public ResponseEntity<Object> getBus(
+            @RequestBody GetAllBusDto busDto) {
+        SendBusDataDto department = new SendBusDataDto(
+                service.getBusbyType(busDto.getFromTo(), busDto.getDestinationId()));
+        return ResponseHandler.generateResponse(HttpStatus.OK, true,
+                "Here are the bus",
+                department);
+    }
 }

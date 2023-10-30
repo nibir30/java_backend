@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.bus.dtos.AddBusDto;
 import com.example.demo.bus.dtos.EditBusDto;
-import com.example.demo.bus.dtos.SendBusDataDto;
 import com.example.demo.bus.entity.*;
 import com.example.demo.bus.enums.FromToEnum;
 import com.example.demo.bus.repositories.*;
@@ -35,10 +34,10 @@ public class BusService {
 
         bus.setDestination(destinationRepository.findById(busDto.getDestinationId())
                 .orElseThrow(() -> new IllegalStateException("Dest does not exit")));
-        if (busDto.getFromTo().equals("from")) {
-            bus.setFromOrTo(FromToEnum.FROM);
+        if (busDto.getFromOrTo().equals("from")) {
+            bus.setFromTo(FromToEnum.FROM);
         } else {
-            bus.setFromOrTo(FromToEnum.TO);
+            bus.setFromTo(FromToEnum.TO);
         }
         BusEntity savedBus = busRepository.save(bus);
         DebugHelper.printData(savedBus.toString());
@@ -68,19 +67,23 @@ public class BusService {
                     .orElseThrow(() -> new IllegalStateException("Bus does not exit"));
             newBus.setDestination(dest);
         }
-        if (busDto.getFromTo() != null) {
+        if (busDto.getFromOrTo() != null) {
 
-            if (busDto.getFromTo().equals("from")) {
-                newBus.setFromOrTo(FromToEnum.FROM);
+            if (busDto.getFromOrTo().equals("from")) {
+                newBus.setFromTo(FromToEnum.FROM);
             } else {
-                newBus.setFromOrTo(FromToEnum.TO);
+                newBus.setFromTo(FromToEnum.TO);
             }
         }
         System.out.println(newBus.toString());
         return true;
     }
 
-    // public List<Bus> getBussbyType(Long id) {
-    // return busRepository.findByPracticeTypeId(id);
-    // }
+    public List<BusEntity> getBusbyType(String fromTo, Long destid) {
+        if (fromTo.equals("from")) {
+            return busRepository.findByFromToAndDestinationId(FromToEnum.FROM, destid);
+        } else {
+            return busRepository.findByFromToAndDestinationId(FromToEnum.TO, destid);
+        }
+    }
 }

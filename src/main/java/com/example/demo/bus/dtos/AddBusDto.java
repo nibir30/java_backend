@@ -16,7 +16,7 @@ public class AddBusDto {
     // @NotEmpty(message = "Destination should not be empty")
     private Long destinationId;
     @NotEmpty(message = "Bangla name should not be empty")
-    private String fromTo;
+    private String fromOrTo;
     @NotEmpty(message = "type should not be empty")
     private String type;
     @NotEmpty(message = "fee should not be empty")

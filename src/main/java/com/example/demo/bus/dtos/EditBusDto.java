@@ -10,7 +10,7 @@ public class EditBusDto {
     private String name;
     private String bangla_name;
     private Long destinationId;
-    private String fromTo;
+    private String fromOrTo;
     private String type;
     private String fee;
     private String time;

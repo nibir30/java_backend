@@ -30,7 +30,7 @@ public class BusEntity {
     private Destination destination;
 
     @Column(nullable = false)
-    private FromToEnum fromOrTo;
+    private FromToEnum fromTo;
 
     @Column(nullable = false)
     private String type;
