@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.bus.dtos.AddBusDto;
 import com.example.demo.bus.dtos.EditBusDto;
 import com.example.demo.bus.entity.*;
-import com.example.demo.bus.enums.FromToEnum;
+import com.example.demo.bus.enums.RouteTypeEnum;
 import com.example.demo.bus.repositories.*;
 import com.example.demo.helpers.DebugHelper;
 
@@ -34,10 +34,10 @@ public class BusService {
 
         bus.setDestination(destinationRepository.findById(busDto.getDestinationId())
                 .orElseThrow(() -> new IllegalStateException("Dest does not exit")));
-        if (busDto.getFromOrTo().equals("from")) {
-            bus.setFromTo(FromToEnum.FROM);
+        if (busDto.getRouteTypeString().equals("from")) {
+            bus.setRouteType(RouteTypeEnum.FROM);
         } else {
-            bus.setFromTo(FromToEnum.TO);
+            bus.setRouteType(RouteTypeEnum.TO);
         }
         BusEntity savedBus = busRepository.save(bus);
         DebugHelper.printData(savedBus.toString());
@@ -67,23 +67,23 @@ public class BusService {
                     .orElseThrow(() -> new IllegalStateException("Bus does not exit"));
             newBus.setDestination(dest);
         }
-        if (busDto.getFromOrTo() != null) {
+        if (busDto.getRouteTypeString() != null) {
 
-            if (busDto.getFromOrTo().equals("from")) {
-                newBus.setFromTo(FromToEnum.FROM);
+            if (busDto.getRouteTypeString().equals("from")) {
+                newBus.setRouteType(RouteTypeEnum.FROM);
             } else {
-                newBus.setFromTo(FromToEnum.TO);
+                newBus.setRouteType(RouteTypeEnum.TO);
             }
         }
         System.out.println(newBus.toString());
         return true;
     }
 
-    public List<BusEntity> getBusbyType(String fromTo, Long destid) {
-        if (fromTo.equals("from")) {
-            return busRepository.findByFromToAndDestinationId(FromToEnum.FROM, destid);
+    public List<BusEntity> getBusbyType(String routeType, Long destid) {
+        if (routeType.equals("from")) {
+            return busRepository.findByRouteTypeAndDestinationId(RouteTypeEnum.FROM, destid);
         } else {
-            return busRepository.findByFromToAndDestinationId(FromToEnum.TO, destid);
+            return busRepository.findByRouteTypeAndDestinationId(RouteTypeEnum.TO, destid);
         }
     }
 }

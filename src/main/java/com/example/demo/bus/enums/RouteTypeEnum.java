@@ -1,6 +1,6 @@
 package com.example.demo.bus.enums;
 
-public enum FromToEnum {
+public enum RouteTypeEnum {
     FROM,
     TO
 }

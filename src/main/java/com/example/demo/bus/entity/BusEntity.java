@@ -1,6 +1,6 @@
 package com.example.demo.bus.entity;
 
-import com.example.demo.bus.enums.FromToEnum;
+import com.example.demo.bus.enums.RouteTypeEnum;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class BusEntity {
     private Destination destination;
 
     @Column(nullable = false)
-    private FromToEnum fromTo;
+    private RouteTypeEnum routeType;
 
     @Column(nullable = false)
     private String type;
