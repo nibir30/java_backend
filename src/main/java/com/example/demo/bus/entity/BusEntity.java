@@ -22,6 +22,8 @@ public class BusEntity {
     private Long id;
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private String bangla_name;
 
     @ManyToOne(targetEntity = Destination.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "fk_bus_destination", referencedColumnName = "id", nullable = false)

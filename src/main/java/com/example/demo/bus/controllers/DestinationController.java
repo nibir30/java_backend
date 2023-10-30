@@ -55,8 +55,7 @@ public class DestinationController {
     @PostMapping(path = "/update/{destinationId}")
     public ResponseEntity<Object> updateCourt(@PathVariable("destinationId") Long id,
             @RequestBody AddDestinationDto court) {
-        boolean isOkay = service.updateDestination(id, court);
-        if (isOkay) {
+        if (service.updateDestination(id, court)) {
             return ResponseHandler.generateResponse(HttpStatus.OK, true,
                     "Destination updated successfully",
                     new SuccessMessageModel("Successfully updated a Destination", true));

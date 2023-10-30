@@ -1,8 +1,7 @@
 package com.example.demo.bus.dtos;
 
-import com.example.demo.bus.enums.FromToEnum;
-
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.ToString;
 
@@ -10,29 +9,24 @@ import lombok.ToString;
 @ToString
 public class AddBusDto {
 
-    @NotNull(message = "Name should not be null")
+    @NotBlank(message = "Lawyer name should not be empty")
     private String name;
-
-    @NotNull(message = "Name should not be null")
-    private String destinationString;
-
-    @NotNull(message = "fromOrTo should not be null")
-    private FromToEnum fromOrTo;
-
-    @NotNull(message = "type should not be null")
+    @NotEmpty(message = "Bangla name should not be empty")
+    private String bangla_name;
+    // @NotEmpty(message = "Destination should not be empty")
+    private Long destinationId;
+    @NotEmpty(message = "Bangla name should not be empty")
+    private String fromTo;
+    @NotEmpty(message = "type should not be empty")
     private String type;
-
-    @NotNull(message = "fee should not be null")
+    @NotEmpty(message = "fee should not be empty")
     private String fee;
-
-    @NotNull(message = "time should not be null")
+    @NotEmpty(message = "time should not be empty")
     private String time;
-
-    @NotNull(message = "phone should not be null")
+    @NotEmpty(message = "phone should not be empty")
     private String phone;
-
+    @NotEmpty(message = "address should not be empty")
     private String address;
-
     private String ticketLink;
 
 }
