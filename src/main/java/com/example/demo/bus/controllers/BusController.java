@@ -71,7 +71,7 @@ public class BusController {
     public ResponseEntity<Object> getBus(
             @RequestBody GetAllBusDto busDto) {
         SendBusDataDto department = new SendBusDataDto(
-                service.getBusbyType(busDto.getRouteType(), busDto.getDestinationId()));
+                service.getBusbyType(busDto.getRouteTypeString(), busDto.getDestinationId()));
         return ResponseHandler.generateResponse(HttpStatus.OK, true,
                 "Here are the bus",
                 department);
