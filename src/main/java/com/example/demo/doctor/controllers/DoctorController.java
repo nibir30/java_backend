@@ -117,4 +117,10 @@ public class DoctorController {
         SendDoctorDataDto doctors = new SendDoctorDataDto(service.getDoctorsbySymptom(id));
         return doctors;
     }
+
+    @GetMapping(path = "homeService")
+    public SendDoctorDataDto getDoctorsByService() {
+        SendDoctorDataDto doctors = new SendDoctorDataDto(service.getDoctorsbyHomeService());
+        return doctors;
+    }
 }

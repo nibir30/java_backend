@@ -18,4 +18,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     List<Doctor> findByDeptId(Long id);
 
+    List<Doctor> findByHomeService(boolean homeService);
+
 }
