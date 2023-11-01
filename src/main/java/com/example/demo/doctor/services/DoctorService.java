@@ -236,6 +236,7 @@ public class DoctorService {
             if (doctor.getSymptomIds() != null) {
                 newDoctor.setSymptom(symptoms);
             }
+            newDoctor.setHomeService(doctor.getHomeService());
             System.out.println(newDoctor.toString());
 
             return newDoctor;

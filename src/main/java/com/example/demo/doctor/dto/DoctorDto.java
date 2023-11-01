@@ -17,6 +17,8 @@ public class DoctorDto {
     private String name;
     @NotEmpty(message = "Phone should not be empty")
     private String phone;
+    @NotEmpty(message = "Service type should not be empty")
+    private boolean homeService;
     @NotEmpty(message = "Department should not be empty")
     private Long deptId;
     @NotEmpty(message = "Degrees should not be empty")

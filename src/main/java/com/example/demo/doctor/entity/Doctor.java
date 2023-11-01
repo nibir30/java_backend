@@ -26,6 +26,9 @@ public class Doctor {
     @Column(nullable = false)
     private String phone;
 
+    @Column(nullable = false)
+    private boolean homeService;
+
     @ManyToOne(targetEntity = Department.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "fk_doctor_department", referencedColumnName = "id", nullable = false)
     private Department dept;
