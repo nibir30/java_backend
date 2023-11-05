@@ -15,8 +15,7 @@ import lombok.NoArgsConstructor;
 public class Hospital {
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String name;
@@ -27,10 +26,10 @@ public class Hospital {
     private String phone;
 
     private String address;
+    @Column(nullable = false)
 
-    @ManyToOne(targetEntity = HospitalDepartment.class, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "fk_hospital_department", referencedColumnName = "id", nullable = false)
-    private HospitalDepartment dept;
+    private String type;
+    private String webLink;
+    private String mapLink;
 
-    private String image_file_path;
 }
