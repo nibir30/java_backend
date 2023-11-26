@@ -37,6 +37,14 @@ public class HospitalController {
                 department);
     }
 
+    @GetMapping("/{type}")
+    public ResponseEntity<Object> getHospitalsByType(@PathVariable("type") String type) {
+        AllHospitalDto department = new AllHospitalDto(service.getHospitalsByType(type));
+        return ResponseHandler.generateResponse(HttpStatus.OK, true,
+                "Here are the hospitals",
+                department);
+    }
+
     @PostMapping
     public ResponseEntity<Object> addNewHospital(@RequestBody @Valid HospitalDto hospital) {
         if (service.addNewHospital(hospital)) {

@@ -27,6 +27,10 @@ public class HospitalService {
         return hospitalRepository.findAll();
     }
 
+    public List<Hospital> getHospitalsByType(String type) {
+        return hospitalRepository.findByType(type);
+    }
+
     public boolean addNewHospital(HospitalDto hospitalDto) {
         Optional<Hospital> existingType = hospitalRepository.findByName(hospitalDto.getName());
 

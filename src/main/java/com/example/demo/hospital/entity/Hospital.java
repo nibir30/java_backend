@@ -28,7 +28,7 @@ public class Hospital {
     private String address;
     @Column(nullable = false)
 
-    private String type;
+    private String type; // public, private, clinic
     private String webLink;
     private String mapLink;
 
