@@ -11,37 +11,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.blood_donor.dtos.SendGroupDataDto;
-import com.example.demo.blood_donor.entity.BloodGroup;
-import com.example.demo.blood_donor.services.BloodGroupService;
+import com.example.demo.blood_donor.entity.OrganizationModel;
+import com.example.demo.blood_donor.services.OrganizationService;
 
 import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping(path = "api/v1/bloodGroups")
 @AllArgsConstructor
-public class BloodGroupController {
-    private final BloodGroupService service;
+public class OrganizationController {
+    private final OrganizationService service;
 
     @GetMapping
-    public SendGroupDataDto getBloodGroups() {
-        SendGroupDataDto groups = new SendGroupDataDto(service.getBloodGroups());
+    public SendGroupDataDto getOrganizations() {
+        SendGroupDataDto groups = new SendGroupDataDto(service.getOrganizations());
         return groups;
     }
 
     @PostMapping
-    public Map<String, Object> addNewBloodGroup(@RequestBody BloodGroup group) {
-        Map<String, Object> result = service.addNewBloodGroup(group);
+    public Map<String, Object> addNewOrganization(@RequestBody OrganizationModel group) {
+        Map<String, Object> result = service.addNewOrganization(group);
         return result;
     }
 
     @DeleteMapping(path = "{groupId}")
-    public void deleteBloodGroup(@PathVariable("groupId") Long id) {
-        service.deleteBloodGroup(id);
+    public void deleteOrganization(@PathVariable("groupId") Long id) {
+        service.deleteOrganization(id);
     }
 
     @PostMapping(path = "/update/{groupId}")
-    public void updateBloodGroup(@PathVariable("groupId") Long id, @RequestBody BloodGroup group) {
-        service.updateBloodGroup(id, group);
+    public void updateOrganization(@PathVariable("groupId") Long id, @RequestBody OrganizationModel group) {
+        service.updateOrganization(id, group);
     }
 
 }

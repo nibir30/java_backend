@@ -2,27 +2,23 @@ package com.example.demo.blood_donor.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Entity(name = "Blood_group")
+@Entity(name = "Blood_organization")
 @Table
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class BloodGroup {
+public class OrganizationModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
-    @Column(nullable = false)
+
     private String name;
 
+    private String bangla_name;
+
+    private String image_file_path;
 }

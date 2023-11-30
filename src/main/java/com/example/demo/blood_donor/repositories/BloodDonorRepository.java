@@ -14,6 +14,6 @@ public interface BloodDonorRepository extends JpaRepository<BloodDonor, Long> {
     // Optional<Doctor> findDOctorByEmail(String Email);
     Optional<BloodDonor> findByName(String name);
 
-    List<BloodDonor> findByBloodGroupId(Long id);
+    List<BloodDonor> findByOrganizationId(Long id);
 
 }

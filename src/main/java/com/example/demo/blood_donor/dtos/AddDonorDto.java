@@ -3,8 +3,7 @@ package com.example.demo.blood_donor.dtos;
 import java.util.Optional;
 
 import com.example.demo.blood_donor.entity.BloodDonor;
-import com.example.demo.blood_donor.entity.BloodGroup;
-import com.example.demo.blood_donor.repositories.BloodGroupRepository;
+import com.example.demo.blood_donor.repositories.OrganizationRepository;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -24,21 +23,4 @@ public class AddDonorDto {
     @NotEmpty(message = "bloodGroupID should not be empty")
     private Long bloodGroupID;
 
-    public BloodDonor dtoToDonorEntity(BloodGroupRepository repository) {
-        BloodDonor donor = new BloodDonor();
-        donor.setName(name);
-        donor.setAddress(address);
-        donor.setGender(gender);
-        donor.setPhone(phone);
-
-        Optional<BloodGroup> group = repository.findById(bloodGroupID);
-        if (group.isPresent()) {
-            donor.setBloodGroup(group.get());
-        } else {
-            return null;
-
-        }
-        return donor;
-
-    }
 }

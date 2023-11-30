@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "Donor")
+@Entity(name = "Blood_donor")
 @Table
 @Data
 @AllArgsConstructor
@@ -18,17 +18,21 @@ public class BloodDonor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
-    @Column(nullable = false)
+
     private String name;
-    @Column(nullable = false)
-    private String phone;
-    @Column(nullable = false)
-    private String address;
-    @Column(nullable = false)
-    private String gender;
+    private String bangla_name;
 
-    @ManyToOne(targetEntity = BloodGroup.class, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "fk_donor_bloodGroup", referencedColumnName = "id", nullable = false)
-    private BloodGroup bloodGroup;
+    @OneToOne(targetEntity = NameAddressPhoneEntity.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_donor_chairman", referencedColumnName = "id")
+    private NameAddressPhoneEntity chairman;
+    @OneToOne(targetEntity = NameAddressPhoneEntity.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_donor_generalSecretary", referencedColumnName = "id")
+    private NameAddressPhoneEntity generalSecretary;
+    @OneToOne(targetEntity = NameAddressPhoneEntity.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_donor_orgSecretary", referencedColumnName = "id")
+    private NameAddressPhoneEntity orgSecretary;
 
+    @ManyToOne(targetEntity = OrganizationModel.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_donor_organization", referencedColumnName = "id")
+    private OrganizationModel organization;
 }
