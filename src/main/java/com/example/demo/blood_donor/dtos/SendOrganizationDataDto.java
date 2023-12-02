@@ -13,6 +13,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SendGroupDataDto {
-    private List<OrganizationModel> bloodGroups;
+public class SendOrganizationDataDto {
+    private List<OrganizationModel> organizations;
 }

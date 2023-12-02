@@ -1,7 +1,6 @@
 package com.example.demo.rentCar.controllers;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

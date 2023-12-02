@@ -22,15 +22,13 @@ public class BloodDonor {
     private String name;
     private String bangla_name;
 
-    @OneToOne(targetEntity = NameAddressPhoneEntity.class, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "fk_donor_chairman", referencedColumnName = "id")
-    private NameAddressPhoneEntity chairman;
-    @OneToOne(targetEntity = NameAddressPhoneEntity.class, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "fk_donor_generalSecretary", referencedColumnName = "id")
-    private NameAddressPhoneEntity generalSecretary;
-    @OneToOne(targetEntity = NameAddressPhoneEntity.class, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "fk_donor_orgSecretary", referencedColumnName = "id")
-    private NameAddressPhoneEntity orgSecretary;
+    private String chairman_name;
+    private String chairman_phone;
+    private String chairman_address;
+
+    private String generalSecretary_name;
+    private String generalSecretary_phone;
+    private String generalSecretary_address;
 
     @ManyToOne(targetEntity = OrganizationModel.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "fk_donor_organization", referencedColumnName = "id")
