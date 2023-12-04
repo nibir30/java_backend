@@ -87,7 +87,7 @@ public class OrganizationService {
 
         Optional<OrganizationImage> savedFile = imageRepository.findById(id);
 
-        if (savedFile != null) {
+        if (savedFile.isPresent()) {
             DebugHelper.printData(savedFile.toString());
             String filePath = savedFile.get().getFilePath();
 
